@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Core {
 
@@ -50,6 +51,8 @@ public class Core {
                 shapesA.add(x.getFaceShape(true).getName());
             }
         }
+
+        shapesA.sort(Comparator.naturalOrder());
         gui.getSeletorShapeA().setModel(new DefaultComboBoxModel<>(shapesA.toArray(new String[shapesA.size()])));
         handleShapeB_Refresh(gui.getSeletorShapeB());
         gui.getSeletorShapeA().addActionListener(e -> handleShapeB_Refresh(gui.getSeletorShapeB()));
@@ -164,6 +167,7 @@ public class Core {
                 }
             }
 
+            shapesB.sort(Comparator.naturalOrder());
             combo.setModel(new DefaultComboBoxModel<>(shapesB.toArray(new String[shapesB.size()])));
         }).start();
     }

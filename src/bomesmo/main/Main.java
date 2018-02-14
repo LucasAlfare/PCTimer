@@ -4,6 +4,7 @@ import bomesmo.main.core.Core;
 import bomesmo.main.core.gui.Gui;
 import com.cs.main.puzzle.Table;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Main {
@@ -18,10 +19,13 @@ public class Main {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException |
+                InstantiationException |
+                IllegalAccessException |
+                javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(() -> new Core(new Gui()));
+        EventQueue.invokeLater(() -> new Core(new Gui()));
     }
 }
