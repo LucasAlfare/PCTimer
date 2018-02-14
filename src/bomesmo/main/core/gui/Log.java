@@ -8,6 +8,7 @@ public class Log extends JFrame {
 
     private String texto;
     private JTextArea jTextArea;
+    private JScrollPane jScrollPane;
 
     public Log(String texto){
         this.texto = texto;
@@ -18,10 +19,14 @@ public class Log extends JFrame {
         setTitle("Solve selecionada");
 
         jTextArea = new JTextArea();
+        jTextArea.setLineWrap(true);
+        jTextArea.setWrapStyleWord(true);
         jTextArea.setFont(new java.awt.Font("Noto Sans", 3, 24)); // NOI18N
         jTextArea.setText(this.texto);
 
-        add(jTextArea);
+        jScrollPane = new JScrollPane(jTextArea);
+
+        add(jScrollPane);
 
         this.addKeyListener(new KeyListener() {
             @Override

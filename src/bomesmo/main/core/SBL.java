@@ -64,46 +64,50 @@ public class SBL implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == 32){
+        if (!core.getGui().getLblScramble().getText().contains("carregando")){
+            if (e.getKeyCode() == 32){
 
-            //core.getGui().getLblTimer().setFont(new java.awt.Font("Noto Sans", 3, 60)); // NOI18N
-            core.getGui().getLblTimer().setFont(new java.awt.Font("Impact", 1, 80)); // NOI18N
-            scrambleMostrado = core.getGui().getLblScramble().getText();
+                //core.getGui().getLblTimer().setFont(new java.awt.Font("Noto Sans", 3, 60)); // NOI18N
+                core.getGui().getLblTimer().setFont(new java.awt.Font("Impact", 1, 80)); // NOI18N
+                scrambleMostrado = core.getGui().getLblScramble().getText();
 
-            if (timerLong == null){
-                timerLong = new Timer();
+                if (timerLong == null){
+                    timerLong = new Timer();
 
-                timerLong.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        isLong = true;
-                    }
-                }, 300, 1000);
-            }
+                    timerLong.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+                            isLong = true;
+                        }
+                    }, 300, 1000);
+                }
 
-            for (JComponent component : components){
-                component.setEnabled(!isLong);
-            }
+                for (JComponent component : components){
+                    component.setEnabled(!isLong);
+                }
 
-            if (started) {
-                core.getSolves().add(new Solve(cronometro.e, scrambleMostrado));
-                stop();
+                if (started) {
+                    core.getSolves().add(new Solve(cronometro.e, scrambleMostrado));
+                    stop();
+                }
             }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == 32){
+        if (!core.getGui().getLblScramble().getText().contains("carregando")){
+            if (e.getKeyCode() == 32){
 
-            //core.getGui().getLblTimer().setFont(new java.awt.Font("Noto Sans", 3, 75)); // NOI18N
-            core.getGui().getLblTimer().setFont(new java.awt.Font("Impact", 1, 100)); // NOI18N
+                //core.getGui().getLblTimer().setFont(new java.awt.Font("Noto Sans", 3, 75)); // NOI18N
+                core.getGui().getLblTimer().setFont(new java.awt.Font("Impact", 1, 100)); // NOI18N
 
-            if (isLong) start();
+                if (isLong) start();
 
-            isLong = false;
-            timerLong.cancel();
-            timerLong = null;
+                isLong = false;
+                timerLong.cancel();
+                timerLong = null;
+            }
         }
     }
 }
