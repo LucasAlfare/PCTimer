@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Square-1 cs Object" level="project" />
+    <orderEntry type="library" name="Square-1 Object" level="project" />
   </component>
 </module>
