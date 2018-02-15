@@ -24,18 +24,19 @@ public class ParityChecker {
     public void searchAll() {
         int kk = 0;
         long i = System.currentTimeMillis();
+
         for (Piece topEdge : getSquareOne().getPieces(true, true)){
             for (Piece topCorner : getSquareOne().getPieces(true, false)){
-                System.out.println(topCorner);
                 for (Piece bottomEdge : getSquareOne().getPieces(false, true)){
                     for (Piece bottomCorner : getSquareOne().getPieces(false, false)){
+
                         pCheckerSearches.add(new PCheckerSearch(
                                 new Piece[]{topEdge, bottomEdge},
                                 new Piece[]{topCorner, bottomCorner},
                                 isEven(
                                         new Piece[]{topEdge, bottomEdge},
                                         new Piece[]{topCorner, bottomCorner})));
-                        kk ++;
+                        kk++;
                     }
                 }
             }
