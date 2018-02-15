@@ -21,7 +21,7 @@ public class ParityChecker {
     }
 
     //TODO: verificar se funciona
-    public void doChecks() {
+    public void searchAll() {
         int kk = 0;
         long i = System.currentTimeMillis();
         for (Piece topEdge : getSquareOne().getPieces(true, true)){
@@ -62,7 +62,7 @@ public class ParityChecker {
         count += isParityTriad(auxTriad.get(0).getColors()[1], auxTriad.get(1).getColors()[1], auxTriad.get(2).getColors()[1]) ?
                 1 : 0;
 
-        count += yellowsInOddPositions(edgesTopBottom, cornersTopBottom) % 2 != 0 ? 1 : 0;
+        count += oddYellows(edgesTopBottom, cornersTopBottom) % 2 != 0 ? 1 : 0;
 
         return count % 2 == 0;
     }
@@ -112,7 +112,7 @@ public class ParityChecker {
         return a;
     }
 
-    public int yellowsInOddPositions(Piece[] edgeStartTopBottom, Piece[] cornerStartTopBottom){
+    public int oddYellows(Piece[] edgeStartTopBottom, Piece[] cornerStartTopBottom){
         ArrayList<Piece> topEdges = getSquareOne().getPieces(true, true);
         ArrayList<Piece> bottomEdges = getSquareOne().getPieces(false, true);
 
