@@ -17,12 +17,10 @@ public class ParityChecker {
     public ParityChecker(SquareOne squareOne) {
         this.squareOne = squareOne;
         pCheckerSearches = Collections.synchronizedList(new ArrayList<>());
-        //this.squareOne.applyStringSequence("(4, 0)/(-1, 5)/(-5, 4)/(6, -3)/(5, -1)/(0, -2)/(6, -3)/(-3, 0)/(-5, -1)/(6, -2)/(4, -3)/");
+        this.squareOne.applyStringSequence("(4, 0)/(-1, 5)/(-5, 4)/(6, -3)/(5, -1)/(0, -2)/(6, -3)/(-3, 0)/(-5, -1)/(6, -2)/(4, -3)/");
     }
 
-    //TODO: verificar se funciona
     public void searchAll() {
-        int kk = 0;
         long i = System.currentTimeMillis();
 
         for (Piece topEdge : getSquareOne().getPieces(true, true)){
@@ -36,7 +34,6 @@ public class ParityChecker {
                                 isEven(
                                         new Piece[]{topEdge, bottomEdge},
                                         new Piece[]{topCorner, bottomCorner})));
-                        kk++;
                     }
                 }
             }
@@ -165,12 +162,12 @@ public class ParityChecker {
 
         private Piece[] edgesTopBottom;
         private Piece[] cornersTopBottom;
-        private boolean even;
+        private boolean isEven;
 
-        public PCheckerSearch(Piece[] edgesTopBottom, Piece[] cornersTopBottom, boolean even) {
+        public PCheckerSearch(Piece[] edgesTopBottom, Piece[] cornersTopBottom, boolean isEven) {
             this.edgesTopBottom = edgesTopBottom;
             this.cornersTopBottom = cornersTopBottom;
-            this.even = even;
+            this.isEven = isEven;
         }
 
         public Piece[] getEdgesTopBottom() {
@@ -190,11 +187,11 @@ public class ParityChecker {
         }
 
         public boolean isEven() {
-            return even;
+            return isEven;
         }
 
         public void setEven(boolean even) {
-            this.even = even;
+            this.isEven = even;
         }
 
         @Override
@@ -207,7 +204,7 @@ public class ParityChecker {
                     "top corner:    " + Arrays.toString(getCornersTopBottom()[0].getColors()) +
                     ";\n\t" +
                     "bottom corner: " + Arrays.toString(getCornersTopBottom()[1].getColors()) +
-                    "\nYou get the result " + (this.isEven() ? "even\n\n" : "odd\n\n");
+                    "\nYou get the result " + (this.isEven() ? "isEven\n\n" : "odd\n\n");
         }
     }
 }

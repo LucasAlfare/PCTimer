@@ -9,8 +9,77 @@ public class Gui extends javax.swing.JFrame {
      */
     public Gui() {
         initComponents();
-        setLocationRelativeTo(null);
     }
+
+    private javax.swing.JButton caleCheckBt;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JPanel jPanel2;
+
+    // Variables declaration - do not modify
+    private javax.swing.JButton btAddShape;
+    private javax.swing.JButton btDeletar;
+    private javax.swing.JButton btDeletarPior;
+    private javax.swing.JButton btDetalharEstatistica;
+    private javax.swing.JButton btVerSolveSelecionada;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton deletarShapeBt;
+    private javax.swing.JPanel painelPreview;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JTextArea parityResultArea;
+    private javax.swing.JScrollPane jScrollPane1;
+    private JSquareOne preview;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblScramble;
+    private javax.swing.JLabel lblTimer;
+    private javax.swing.JList<String> listaAdicionados;
+    private javax.swing.JList<String> listaEstatisticas;
+    private javax.swing.JList<String> listaTempos;
+    private javax.swing.JPanel solvesPanel;
+    private javax.swing.JPanel painelSquare;
+    private javax.swing.JButton tracingCheckBt;
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Gui().setVisible(true);
+            }
+        });
+    }
+
+    private javax.swing.JComboBox<String> seletorScramble;
+    private javax.swing.JComboBox<String> seletorShapeA;
+    private javax.swing.JComboBox<String> seletorShapeB;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -21,25 +90,33 @@ public class Gui extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         lblScramble = new javax.swing.JLabel();
         lblTimer = new javax.swing.JLabel();
+        solvesPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listaTempos = new javax.swing.JList<>();
+        btVerSolveSelecionada = new javax.swing.JButton();
         btDeletar = new javax.swing.JButton();
         btDeletarPior = new javax.swing.JButton();
-        btVerSolveSelecionada = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        jButton4 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         listaEstatisticas = new javax.swing.JList<>();
         btDetalharEstatistica = new javax.swing.JButton();
-        seletorScramble = new javax.swing.JComboBox<>();
         painelSquare = new javax.swing.JPanel();
         seletorShapeA = new javax.swing.JComboBox<>();
         seletorShapeB = new javax.swing.JComboBox<>();
-        btAddShape = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
         listaAdicionados = new javax.swing.JList<>();
+        btAddShape = new javax.swing.JButton();
         deletarShapeBt = new javax.swing.JButton();
+        painelPreview = new javax.swing.JPanel();
+        preview = new JSquareOne();
+        caleCheckBt = new javax.swing.JButton();
+        tracingCheckBt = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        parityResultArea = new javax.swing.JTextArea();
+        seletorScramble = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -47,203 +124,190 @@ public class Gui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(255, 0, 0)));
-
-        lblScramble.setUI(MultiLineLabelUI.labelUI);
-        lblScramble.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblScramble.setForeground(new java.awt.Color(255, 255, 255));
-        lblScramble.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblScramble.setText("carregando...");
+        lblScramble.setText("loading...");
         lblScramble.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lblScramble.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lblTimer.setFont(new java.awt.Font("Impact", 1, 100)); // NOI18N
-        lblTimer.setForeground(new java.awt.Color(255, 255, 255));
+        lblTimer.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
         lblTimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTimer.setText("00:00.000");
-        lblTimer.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblTimer.setText("ready");
 
-        listaTempos.setBackground(new java.awt.Color(0, 0, 0));
-        listaTempos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Solves", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(204, 204, 204))); // NOI18N
-        listaTempos.setForeground(new java.awt.Color(255, 255, 255));
+        solvesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Solves"));
+
         listaTempos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "[sem solves]" };
+            String[] strings = {"[no solves yet]"};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         listaTempos.setFocusable(false);
         jScrollPane1.setViewportView(listaTempos);
 
-        btDeletar.setText("<html>\n    <center>deletar solve<br>selecionada</center>\n</html>");
-        btDeletar.setFocusable(false);
-
-        btDeletarPior.setText("<html>\n    <center>deletar<br>pior tempo</center>\n</html>");
-        btDeletarPior.setFocusable(false);
-
-        btVerSolveSelecionada.setText("<html>\n    <center>ver solve<br>selecionada</center>\n</html>");
+        btVerSolveSelecionada.setText("look selected");
         btVerSolveSelecionada.setFocusable(false);
 
-        listaEstatisticas.setBackground(new java.awt.Color(0, 0, 0));
-        listaEstatisticas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Stats", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(204, 204, 204))); // NOI18N
-        listaEstatisticas.setForeground(new java.awt.Color(255, 255, 255));
+        btDeletar.setText("delete selected");
+        btDeletar.setFocusable(false);
+
+        btDeletarPior.setText("delete worst");
+        btDeletarPior.setFocusable(false);
+
+        jButton4.setText("clear");
+        jButton4.setFocusable(false);
+
+        javax.swing.GroupLayout solvesPanelLayout = new javax.swing.GroupLayout(solvesPanel);
+        solvesPanel.setLayout(solvesPanelLayout);
+        solvesPanelLayout.setHorizontalGroup(
+                solvesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btVerSolveSelecionada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btDeletar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btDeletarPior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        solvesPanelLayout.setVerticalGroup(
+                solvesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(solvesPanelLayout.createSequentialGroup()
+                                .addComponent(jScrollPane1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btVerSolveSelecionada)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btDeletar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btDeletarPior)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Statistics"));
+
         listaEstatisticas.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = {
-                    "melhor tempo: - -",
-                    "pior tempo: - -",
-
-                    "/----------------------/",
-
-                    "média geral: - -",
-                    "average geral: - -",
-
-                    "/----------------------/",
-
-                    "melhor avg5: - -",
-                    "current avg5: - -",
-                    "pior avg5: - -",
-
-                    "/----------------------/",
-
-                    "melhor avg12: - -",
-                    "current avg12: - -",
-                    "pior avg12: - -",
-
-                    "/----------------------/",
-
-                    "melhor avg50: - -",
-                    "current avg50: - -",
-                    "pior avg50: - -",
-
-                    "/----------------------/",
-
-                    "melhor avg100: - -",
-                    "current avg100: - -",
-                    "pior avg100: - -"
-            };
-
+            String[] strings = {"[no solves yet]"};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         listaEstatisticas.setFocusable(false);
-        jScrollPane3.setViewportView(listaEstatisticas);
+        jScrollPane2.setViewportView(listaEstatisticas);
 
-        btDetalharEstatistica.setText("detalhar estatística selecionada");
+        btDetalharEstatistica.setText("look selected");
         btDetalharEstatistica.setFocusable(false);
 
-        seletorScramble.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3x3", "2x2", "squareone", "squareone cúbico", "skewb", "clock", "megaminx", "megaminx LFLL" }));
-        seletorScramble.setBorder(javax.swing.BorderFactory.createTitledBorder("Scramble"));
-        seletorScramble.setFocusable(false);
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2)
+                        .addComponent(btDetalharEstatistica, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btDetalharEstatistica, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
-        painelSquare.setBackground(new java.awt.Color(0, 0, 0));
-        painelSquare.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cstom shapes configs", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        painelSquare.setBorder(javax.swing.BorderFactory.createTitledBorder("Square-1"));
 
-        seletorShapeA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "carregando..." }));
+        seletorShapeA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
         seletorShapeA.setBorder(javax.swing.BorderFactory.createTitledBorder("Shape A"));
         seletorShapeA.setFocusable(false);
 
-        seletorShapeB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- -" }));
+        seletorShapeB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
         seletorShapeB.setBorder(javax.swing.BorderFactory.createTitledBorder("Shape B"));
         seletorShapeB.setFocusable(false);
 
-        btAddShape.setText("<html>\n    <center>adicionar aos<br>shapes preferidos</center>\n</html>");
-        btAddShape.setFocusable(false);
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder("Your Cubeshapes"));
 
-        listaAdicionados.setBackground(new java.awt.Color(0, 0, 0));
-        listaAdicionados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Shapes adicionados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
-        listaAdicionados.setForeground(new java.awt.Color(255, 255, 255));
         listaAdicionados.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "sem shapes adicionados ainda!" };
+            String[] strings = {"- -"};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         listaAdicionados.setFocusable(false);
-        jScrollPane4.setViewportView(listaAdicionados);
+        jScrollPane3.setViewportView(listaAdicionados);
 
-        deletarShapeBt.setText("<html>deletar shape<br>selecionado</html>");
-        deletarShapeBt.setActionCommand("<html>\n    <center>\n        deletar shape\n       <br>\n       selecionado\n    </center>\n</html>");
+        btAddShape.setText("add to your shapes");
+        btAddShape.setFocusable(false);
+
+        deletarShapeBt.setText("delete selected");
         deletarShapeBt.setFocusable(false);
+
+        painelPreview.setBorder(javax.swing.BorderFactory.createTitledBorder("Preview"));
+
+        javax.swing.GroupLayout painelPreviewLayout = new javax.swing.GroupLayout(painelPreview);
+        painelPreview.setLayout(painelPreviewLayout);
+        painelPreviewLayout.setHorizontalGroup(
+                painelPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(preview, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+        );
+        painelPreviewLayout.setVerticalGroup(
+                painelPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(preview, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        caleCheckBt.setText("check the parity (Cale)");
+        caleCheckBt.setFocusable(false);
+
+        tracingCheckBt.setText("check the parity (tracing)");
+        tracingCheckBt.setFocusable(false);
+
+        parityResultArea.setColumns(20);
+        parityResultArea.setRows(5);
+        parityResultArea.setBorder(javax.swing.BorderFactory.createTitledBorder("Parity result"));
+        parityResultArea.setFocusable(false);
+        jScrollPane4.setViewportView(parityResultArea);
 
         javax.swing.GroupLayout painelSquareLayout = new javax.swing.GroupLayout(painelSquare);
         painelSquare.setLayout(painelSquareLayout);
         painelSquareLayout.setHorizontalGroup(
                 painelSquareLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(seletorShapeA, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(seletorShapeB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btAddShape, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane4)
-                        .addComponent(deletarShapeBt)
+                        .addGroup(painelSquareLayout.createSequentialGroup()
+                                .addGroup(painelSquareLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(btAddShape, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(painelSquareLayout.createSequentialGroup()
+                                                .addComponent(seletorShapeA, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(seletorShapeB, 0, 119, Short.MAX_VALUE))
+                                        .addComponent(deletarShapeBt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(painelSquareLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelSquareLayout.createSequentialGroup()
+                                                .addComponent(caleCheckBt, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(tracingCheckBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(painelPreview, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)))
         );
         painelSquareLayout.setVerticalGroup(
                 painelSquareLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(painelSquareLayout.createSequentialGroup()
-                                .addComponent(seletorShapeA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(painelSquareLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(seletorShapeA, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                                        .addComponent(seletorShapeB))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(seletorShapeB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btAddShape)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btAddShape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(deletarShapeBt))
+                        .addGroup(painelSquareLayout.createSequentialGroup()
+                                .addComponent(painelPreview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deletarShapeBt, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
+                                .addGroup(painelSquareLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(caleCheckBt)
+                                        .addComponent(tracingCheckBt))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane4))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblScramble, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                        .addComponent(btVerSolveSelecionada)
-                                                        .addComponent(btDeletar)
-                                                        .addComponent(btDeletarPior, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jScrollPane3)
-                                                        .addComponent(btDetalharEstatistica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                        .addComponent(lblTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(seletorScramble, 0, 209, Short.MAX_VALUE)
-                                        .addComponent(painelSquare, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblScramble, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(lblTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                                .addComponent(btDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(9, 9, 9)
-                                                                .addComponent(btDeletarPior, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(btVerSolveSelecionada, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(btDetalharEstatistica, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(seletorScramble)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(painelSquare, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())
-        );
+        seletorScramble.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"3x3", "2x2", "squareone", "squareone cúbico", "skewb", "clock", "megaminx", "megaminx LFLL"}));
+        seletorScramble.setBorder(javax.swing.BorderFactory.createTitledBorder("Scramble"));
+        seletorScramble.setFocusable(false);
 
         jMenu1.setText("File");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Sair");
+        jMenuItem1.setText("jMenuItem1");
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
@@ -257,41 +321,44 @@ public class Gui extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(solvesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(painelSquare, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(seletorScramble, 0, 217, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblScramble, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(lblScramble, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(seletorScramble, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(solvesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(painelSquare, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>
 
-    // Variables declaration - do not modify
-    private javax.swing.JButton btAddShape;
-    private javax.swing.JButton btDeletar;
-    private javax.swing.JButton btDeletarPior;
-    private javax.swing.JButton btDetalharEstatistica;
-    private javax.swing.JButton btVerSolveSelecionada;
-    private javax.swing.JButton deletarShapeBt;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JLabel lblScramble;
-    private javax.swing.JLabel lblTimer;
-    private javax.swing.JList<String> listaAdicionados;
-    private javax.swing.JList<String> listaEstatisticas;
-    private javax.swing.JList<String> listaTempos;
-    private javax.swing.JPanel painelSquare;
-    private javax.swing.JComboBox<String> seletorScramble;
-    private javax.swing.JComboBox<String> seletorShapeA;
-    private javax.swing.JComboBox<String> seletorShapeB;
+    private void seletorShapeBActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
     // End of variables declaration
+
+    public JButton getBtAddShape() {
+        return btAddShape;
+    }
 
     public JButton getBtDeletar() {
         return btDeletar;
@@ -301,12 +368,16 @@ public class Gui extends javax.swing.JFrame {
         return btDeletarPior;
     }
 
+    public JButton getBtDetalharEstatistica() {
+        return btDetalharEstatistica;
+    }
+
     public JButton getBtVerSolveSelecionada() {
         return btVerSolveSelecionada;
     }
 
-    public JButton getBtDetalharEstatistica() {
-        return btDetalharEstatistica;
+    public JButton getCaleCheckBt() {
+        return caleCheckBt;
     }
 
     public JButton getDeletarShapeBt() {
@@ -321,6 +392,10 @@ public class Gui extends javax.swing.JFrame {
         return lblTimer;
     }
 
+    public JList<String> getListaAdicionados() {
+        return listaAdicionados;
+    }
+
     public JList<String> getListaEstatisticas() {
         return listaEstatisticas;
     }
@@ -329,27 +404,39 @@ public class Gui extends javax.swing.JFrame {
         return listaTempos;
     }
 
-    public JList<String> getListaAdicionados() {
-        return listaAdicionados;
+    public JPanel getPainelPreview() {
+        return painelPreview;
+    }
+
+    public JPanel getPainelSquare() {
+        return painelSquare;
+    }
+
+    public JTextArea getParityResultArea() {
+        return parityResultArea;
     }
 
     public JComboBox<String> getSeletorScramble() {
         return seletorScramble;
     }
 
-    public JComboBox<String> getSeletorShapeB() {
-        return seletorShapeB;
-    }
-
     public JComboBox<String> getSeletorShapeA() {
         return seletorShapeA;
     }
 
-    public JButton getBtAddShape() {
-        return btAddShape;
+    public JComboBox<String> getSeletorShapeB() {
+        return seletorShapeB;
     }
 
-    public JPanel getPainelSquare() {
-        return painelSquare;
+    public JPanel getSolvesPanel() {
+        return solvesPanel;
+    }
+
+    public JButton getTracingCheckBt() {
+        return tracingCheckBt;
+    }
+
+    public JSquareOne getPreview() {
+        return preview;
     }
 }

@@ -21,4 +21,9 @@ public class PocketScrambler extends Scramble{
 
         return r.toString();
     }
+
+    @Override
+    public String[] getSequenceMovements() {
+        return new String[0];
+    }
 }

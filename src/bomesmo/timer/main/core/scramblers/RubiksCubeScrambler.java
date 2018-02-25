@@ -2,6 +2,8 @@ package bomesmo.timer.main.core.scramblers;
 
 public class RubiksCubeScrambler extends Scramble {
 
+    private String sequence;
+
     @Override
     public String getSequence() {
         StringBuilder r = new StringBuilder();
@@ -19,8 +21,13 @@ public class RubiksCubeScrambler extends Scramble {
                     .append(normalDirections[rnd.nextInt(normalDirections.length)]);
         }
 
+        sequence = r.toString();
+        return sequence;
+    }
 
-        return r.toString();
+    @Override
+    public String[] getSequenceMovements() {
+        return sequence.split(" ");
     }
 
     private boolean sameAxis(String x, String y, String z){

@@ -41,4 +41,9 @@ public class SquareOneScrambler extends Scramble{
     public boolean isVazio() {
         return vazio;
     }
+
+    @Override
+    public String[] getSequenceMovements() {
+        return new String[0];
+    }
 }

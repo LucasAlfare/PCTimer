@@ -20,4 +20,6 @@ public abstract class Scramble {
     normalDirections = {"' ", "2 ", " "};
 
     public abstract String getSequence();
+
+    public abstract String[] getSequenceMovements();
 }

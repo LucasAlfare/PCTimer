@@ -7,6 +7,7 @@ import bomesmo.timer.main.core.gui.Log;
 import bomesmo.timer.main.core.scramblers.*;
 import bomesmo.timer.main.core.statistics.*;
 import com.cs.main.puzzle.Table;
+import com.main.puzzle.SquareOne;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ public class Core {
 
     private Scramble scramble;
     private String scrambleShown;
+
+    private boolean squareOneEntered;
 
     public Core(Gui gui){
         this.gui = gui;
@@ -93,9 +96,10 @@ public class Core {
 
             if (Main.shapesPreferidos.size() == 1){
                 scramble = new SquareOneScrambler(false);
-                gui.getLblScramble().setText("carregando....");
+                gui.getLblScramble().setText("loading....");
                 scrambleShown = scramble.getSequence();
                 gui.getLblScramble().setText(scrambleShown);
+                gui.getPreview().setSquareOne(new SquareOne(scrambleShown));
             }
         }).start());
     }
@@ -151,7 +155,7 @@ public class Core {
     }
 
     private void handleShapeB_Refresh(JComboBox<String> combo){
-        combo.setModel(new DefaultComboBoxModel<>(new String[]{"carregando..."}));
+        combo.setModel(new DefaultComboBoxModel<>(new String[]{"loading..."}));
 
         new Thread(() -> {
             String selectedA = (String) gui.getSeletorShapeA().getSelectedItem();
@@ -171,8 +175,9 @@ public class Core {
     }
 
     private void handleNewScramble(JComboBox<String> combo){
-        gui.getLblScramble().setText("carregando....");
+        gui.getLblScramble().setText("loading....");
         gui.getPainelSquare().setVisible(combo.getSelectedIndex() == 2);
+        squareOneEntered = combo.getSelectedIndex() == 2;
 
         new Thread(() -> {
             switch (combo.getSelectedIndex()){
@@ -192,6 +197,11 @@ public class Core {
                     //SET SQ-1 SCRAMBLE
                     scramble = new SquareOneScrambler(Main.shapesPreferidos.size() == 0);
                     scrambleShown = scramble.getSequence();
+
+                    if (!scrambleShown.contains("selecione")) {
+                        gui.getPreview().setSquareOne(new SquareOne(scrambleShown));
+                    }
+
                     gui.getLblScramble().setText(scrambleShown);
                     break;
                 case 3:
@@ -341,5 +351,9 @@ public class Core {
 
     public Scramble getScramble() {
         return scramble;
+    }
+
+    public boolean isSquareOneEntered() {
+        return squareOneEntered;
     }
 }

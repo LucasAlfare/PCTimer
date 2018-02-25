@@ -1,6 +1,7 @@
 package bomesmo.timer.main.core;
 
 import bomesmo.timer.main.auxiliar.Cronometro;
+import com.main.puzzle.SquareOne;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,8 +47,13 @@ public class SBL implements KeyListener {
           Thread to prevent program stuck when generating scramble (onStop)
          */
         new Thread(() -> {
-            core.getGui().getLblScramble().setText("carregando....");//first
-            core.getGui().getLblScramble().setText(core.getScramble().getSequence());//sucess
+            core.getGui().getLblScramble().setText("loading....");//first
+            String currSeq = core.getScramble().getSequence();
+            core.getGui().getLblScramble().setText(currSeq);//on sucess
+
+            if (core.isSquareOneEntered()) {
+                core.getGui().getPreview().setSquareOne(new SquareOne(currSeq));
+            }
 
             java.awt.EventQueue.invokeLater(() -> {
                 core.getGui().setState(Frame.NORMAL);
