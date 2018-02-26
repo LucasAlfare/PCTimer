@@ -17,7 +17,7 @@ public class ParityChecker {
     public ParityChecker(SquareOne squareOne) {
         this.squareOne = squareOne;
         pCheckerSearches = Collections.synchronizedList(new ArrayList<>());
-        this.squareOne.applyStringSequence("(4, 0)/(-1, 5)/(-5, 4)/(6, -3)/(5, -1)/(0, -2)/(6, -3)/(-3, 0)/(-5, -1)/(6, -2)/(4, -3)/");
+        //this.squareOne.applyStringSequence("(4, 0)/(-1, 5)/(-5, 4)/(6, -3)/(5, -1)/(0, -2)/(6, -3)/(-3, 0)/(-5, -1)/(6, -2)/(4, -3)/");
     }
 
     public void searchAll() {
@@ -43,26 +43,37 @@ public class ParityChecker {
     }
 
     public boolean isEven(Piece[] edgesTopBottom, Piece[] cornersTopBottom){
-        int count = 0;
-        ArrayList<Piece> auxTriad = getPiecesTriad(edgesTopBottom, 'w');
-        count += isParityTriad(auxTriad.get(0).getColors()[1], auxTriad.get(1).getColors()[1], auxTriad.get(2).getColors()[1]) ?
-                1 : 0;
+        if (edgesTopBottom != null && cornersTopBottom != null) {
+            if (
+                    edgesTopBottom[0] != null &&
+                            edgesTopBottom[1] != null &&
+                            cornersTopBottom[0] != null &&
+                            cornersTopBottom[1] != null) {
 
-        auxTriad = getPiecesTriad(edgesTopBottom, 'y');
-        count += isParityTriad(auxTriad.get(0).getColors()[1], auxTriad.get(1).getColors()[1], auxTriad.get(2).getColors()[1]) ?
-                1 : 0;
+                int count = 0;
+                ArrayList<Piece> auxTriad = getPiecesTriad(edgesTopBottom, 'w');
+                count += isParityTriad(auxTriad.get(0).getColors()[1], auxTriad.get(1).getColors()[1], auxTriad.get(2).getColors()[1]) ?
+                        1 : 0;
 
-        auxTriad = getPiecesTriad(cornersTopBottom, 'w');
-        count += isParityTriad(auxTriad.get(0).getColors()[1], auxTriad.get(1).getColors()[1], auxTriad.get(2).getColors()[1]) ?
-                1 : 0;
+                auxTriad = getPiecesTriad(edgesTopBottom, 'y');
+                count += isParityTriad(auxTriad.get(0).getColors()[1], auxTriad.get(1).getColors()[1], auxTriad.get(2).getColors()[1]) ?
+                        1 : 0;
 
-        auxTriad = getPiecesTriad(cornersTopBottom, 'y');
-        count += isParityTriad(auxTriad.get(0).getColors()[1], auxTriad.get(1).getColors()[1], auxTriad.get(2).getColors()[1]) ?
-                1 : 0;
+                auxTriad = getPiecesTriad(cornersTopBottom, 'w');
+                count += isParityTriad(auxTriad.get(0).getColors()[1], auxTriad.get(1).getColors()[1], auxTriad.get(2).getColors()[1]) ?
+                        1 : 0;
 
-        count += oddYellows(edgesTopBottom, cornersTopBottom) % 2 != 0 ? 1 : 0;
+                auxTriad = getPiecesTriad(cornersTopBottom, 'y');
+                count += isParityTriad(auxTriad.get(0).getColors()[1], auxTriad.get(1).getColors()[1], auxTriad.get(2).getColors()[1]) ?
+                        1 : 0;
 
-        return count % 2 == 0;
+                count += oddYellows(edgesTopBottom, cornersTopBottom) % 2 != 0 ? 1 : 0;
+
+                return count % 2 == 0;
+            }
+        }
+
+        return false;
     }
 
     public boolean isParityTriad(char... triad){

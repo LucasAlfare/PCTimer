@@ -1,12 +1,14 @@
 package bomesmo.timer.main.core;
 
 import bomesmo.Main;
+import bomesmo.paritychecker.main.ParityChecker;
 import bomesmo.timer.main.auxiliar.Misc;
 import bomesmo.timer.main.core.gui.Gui;
 import bomesmo.timer.main.core.gui.Log;
 import bomesmo.timer.main.core.scramblers.*;
 import bomesmo.timer.main.core.statistics.*;
 import com.cs.main.puzzle.Table;
+import com.main.puzzle.Piece;
 import com.main.puzzle.SquareOne;
 
 import javax.swing.*;
@@ -27,7 +29,8 @@ public class Core {
         this.gui = gui;
         solves = new ArrayList<>();
 
-        gui.getPainelSquare().setVisible(false);
+        this.gui.getPainelSquare().setVisible(false);
+        this.gui.getCaleCheckBt().setEnabled(false);
 
         handleNewScramble(this.gui.getSeletorScramble());
 
@@ -41,8 +44,27 @@ public class Core {
         setupAddCubeShape();
         setupDeletarShapeSelecionado();
         setupSpaceListener();
+        setupCaleCheckBt();
 
         this.gui.setVisible(true);
+    }
+
+    private void setupCaleCheckBt() {
+        gui.getCaleCheckBt().addActionListener(e -> {
+            ParityChecker parityChecker = new ParityChecker(gui.getPreview().getSquareOne());
+
+            Piece[] edgesTopBottom = new Piece[]{
+                    gui.getPreview().getCustomMouseAdapter().gettEdge(),
+                    gui.getPreview().getCustomMouseAdapter().getbEdge()
+            };
+
+            Piece[] cornersTopBottom = new Piece[]{
+                    gui.getPreview().getCustomMouseAdapter().gettCorner(),
+                    gui.getPreview().getCustomMouseAdapter().getbCorner()
+            };
+
+            gui.getParityResultArea().setText(parityChecker.isEven(edgesTopBottom, cornersTopBottom) + ".");
+        });
     }
 
     private void setupShapeA_Box(){
@@ -100,6 +122,7 @@ public class Core {
                 scrambleShown = scramble.getSequence();
                 gui.getLblScramble().setText(scrambleShown);
                 gui.getPreview().setSquareOne(new SquareOne(scrambleShown));
+                this.gui.getCaleCheckBt().setEnabled(true);
             }
         }).start());
     }
@@ -149,7 +172,10 @@ public class Core {
                         gui.getSeletorShapeA(),
                         gui.getSeletorShapeB(),
                         gui.getDeletarShapeBt(),
-                        gui.getBtAddShape()
+                        gui.getBtAddShape(),
+                        gui.getPreview(),
+                        gui.getCaleCheckBt(),
+                        gui.getTracingCheckBt()
                 )
         );
     }

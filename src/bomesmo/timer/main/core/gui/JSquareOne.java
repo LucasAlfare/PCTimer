@@ -15,17 +15,18 @@ import java.util.Arrays;
 
 public class JSquareOne extends JComponent {
 
+    private static double l = 100;
     private static final double TAN15 = Math.tan(Math.toRadians(15));
     private static final int TOP_ANCHOR_X = 85;
     private static final int TOP_ANCHOR_Y = 85;
     private static final int BOTTOM_ANCHOR_X = TOP_ANCHOR_X + 160;
     private static final int BOTTOM_ANCHOR_Y = 85;
-    private static double l = 100;
+
     private SquareOne squareOne;
+    private CustomMosueAdapter customMouseAdapter;
 
-    private int tEdge, tCorner, bEdge, bCorner;
-
-    private MouseAdapter mouseAdapter;
+    //private ArrayList<Piece> top = new ArrayList<>(), bottom = new ArrayList<>();
+    private Piece[] top = new Piece[8], bottom = new Piece[8];
 
     public JSquareOne() {
         squareOne = new SquareOne();
@@ -41,33 +42,6 @@ public class JSquareOne extends JComponent {
 
         setPreferredSize(new Dimension(350, 220));
         setMinimumSize(new Dimension(350, 220));
-    }
-
-    private static ArrayList<double[]> rotatedPoints(ArrayList<double[]> points, double[] anchorPoint, double angle) {
-        ArrayList<double[]> r = new ArrayList<>();
-
-        for (double[] point : points) {
-            r.add(rotatedPoint(point, anchorPoint, angle));
-        }
-
-        return r;
-    }
-
-    private static double[] rotatedPoint(double[] point, double[] anchorPoint, double angle) {
-        double x1 = point[0] - anchorPoint[0];
-        double y1 = point[1] - anchorPoint[1];
-
-        double x2 = x1 * Math.cos(Math.toRadians(angle)) - y1 * Math.sin(Math.toRadians(angle));
-        double y2 = x1 * Math.sin(Math.toRadians(angle)) + y1 * Math.cos(Math.toRadians(angle));
-
-        return new double[]{x2 + anchorPoint[0], y2 + anchorPoint[1]};
-    }
-
-    private void setupMouseAdapter() {
-        mouseAdapter = new CustomMosueAdapter(
-                piecesToDraw(true, TOP_ANCHOR_X, TOP_ANCHOR_Y),
-                piecesToDraw(false, BOTTOM_ANCHOR_X, BOTTOM_ANCHOR_Y));
-        addMouseListener(mouseAdapter);
     }
 
     @Override
@@ -94,19 +68,14 @@ public class JSquareOne extends JComponent {
         repaint();
     }
 
-    private ArrayList<Path2D[]> piecesToDraw(boolean face, double x, double y) {
-        ArrayList<Path2D[]> pieces = new ArrayList<>();
+    private static ArrayList<double[]> rotatedPoints(ArrayList<double[]> points, double[] anchorPoint, double angle) {
+        ArrayList<double[]> r = new ArrayList<>();
 
-        boolean prevIsMeio = getSquareOne().getPieces(face).get(0).getColors().length == 2;
-        //double currAngle = 0;
-        double currAngle = prevIsMeio ? -30 : -45;
-        for (Piece p : getSquareOne().getPieces(face)) {
-            currAngle += prevIsMeio && p.getColors().length == 2 ? 30 : (!prevIsMeio && p.getColors().length != 2 ? 60 : 45);
-            prevIsMeio = p.getColors().length == 2;
-            pieces.add(p.getColors().length == 2 ? meioFull(x, y, currAngle) : cantoFull(x, y, currAngle));
+        for (double[] point : points) {
+            r.add(rotatedPoint(point, anchorPoint, angle));
         }
 
-        return pieces;
+        return r;
     }
 
     private Path2D[] cantoFull(double x, double y, double angle) {
@@ -242,6 +211,53 @@ public class JSquareOne extends JComponent {
         return path;
     }
 
+    private static double[] rotatedPoint(double[] point, double[] anchorPoint, double angle) {
+        double x1 = point[0] - anchorPoint[0];
+        double y1 = point[1] - anchorPoint[1];
+
+        double x2 = x1 * Math.cos(Math.toRadians(angle)) - y1 * Math.sin(Math.toRadians(angle));
+        double y2 = x1 * Math.sin(Math.toRadians(angle)) + y1 * Math.cos(Math.toRadians(angle));
+
+        return new double[]{x2 + anchorPoint[0], y2 + anchorPoint[1]};
+    }
+
+    private ArrayList<Path2D[]> piecesToDraw(boolean face, double x, double y) {
+        if (face) {
+            top = new Piece[getSquareOne().getPieces(true).size()];
+        } else {
+            bottom = new Piece[getSquareOne().getPieces(false).size()];
+        }
+
+        ArrayList<Path2D[]> pieces = new ArrayList<>();
+
+        int i = 0;
+        boolean prevIsMeio = getSquareOne().getPieces(face).get(0).getColors().length == 2;
+        //double currAngle = 0;
+        double currAngle = prevIsMeio ? -30 : -45;
+        for (Piece p : getSquareOne().getPieces(face)) {
+            currAngle += prevIsMeio && p.getColors().length == 2 ? 30 : (!prevIsMeio && p.getColors().length != 2 ? 60 : 45);
+            prevIsMeio = p.getColors().length == 2;
+            pieces.add(p.getColors().length == 2 ? meioFull(x, y, currAngle) : cantoFull(x, y, currAngle));
+
+            if (face) {
+                top[i] = p;
+            } else {
+                bottom[i] = p;
+            }
+
+            i++;
+        }
+
+        return pieces;
+    }
+
+    private void setupMouseAdapter() {
+        customMouseAdapter = new CustomMosueAdapter(
+                piecesToDraw(true, TOP_ANCHOR_X, TOP_ANCHOR_Y),
+                piecesToDraw(false, BOTTOM_ANCHOR_X, BOTTOM_ANCHOR_Y));
+        addMouseListener(customMouseAdapter);
+    }
+
     private Color getColorByChar(char sigla) {
         switch (sigla) {
             case 'w':
@@ -288,18 +304,18 @@ public class JSquareOne extends JComponent {
         JSquareOne.l = l;
     }
 
-    public MouseAdapter getMouseAdapter() {
-        return mouseAdapter;
+    public CustomMosueAdapter getCustomMouseAdapter() {
+        return customMouseAdapter;
     }
 
-    public void setMouseAdapter(MouseAdapter mouseAdapter) {
-        this.mouseAdapter = mouseAdapter;
+    public void setCustomMouseAdapter(CustomMosueAdapter customMouseAdapter) {
+        this.customMouseAdapter = customMouseAdapter;
     }
 
-    private class CustomMosueAdapter extends MouseAdapter {
+    public class CustomMosueAdapter extends MouseAdapter {
 
         private ArrayList<Path2D[]> topDrawedPieces, bottomDrawed;
-        private int tEdge, tCorner, bEdge, bCorner;
+        private Piece tEdge, tCorner, bEdge, bCorner;
 
         public CustomMosueAdapter(ArrayList<Path2D[]> topDrawedPieces, ArrayList<Path2D[]> bottomDrawed) {
             this.topDrawedPieces = topDrawedPieces;
@@ -311,27 +327,31 @@ public class JSquareOne extends JComponent {
             super.mouseClicked(e);
             setPiecesIndexClicked(true, e.getPoint());
             setPiecesIndexClicked(false, e.getPoint());
+
+            JOptionPane.showMessageDialog(JSquareOne.this,
+                    "topo:  " + (tEdge) + "/" + (tCorner) +
+                            "\nbase: " + (bEdge) + "/" + (bCorner));
         }
 
         private void setPiecesIndexClicked(boolean face, Point2D clikcedPoint) {
-            ArrayList<Path2D[]> top = face ? topDrawedPieces : bottomDrawed;
-            for (int i = 0; i < top.size(); i++) {
-                for (int j = 0; j < top.get(i).length; j++) {
-                    if (top.get(i)[j].contains(clikcedPoint)) {
-                        if (isMeio(top.get(i)[0])) {
+            ArrayList<Path2D[]> draws = face ? topDrawedPieces : bottomDrawed;
+            for (int i = 0; i < draws.size(); i++) {
+                for (int j = 0; j < draws.get(i).length; j++) {
+                    if (draws.get(i)[j].contains(clikcedPoint)) {
+                        if (isMeio(draws.get(i)[0])) {
                             if (face) {
-                                tEdge = i;
+                                tEdge = top[i];
                                 break;
                             } else {
-                                bEdge = i;
+                                bEdge = bottom[i];
                                 break;
                             }
                         } else {
                             if (face) {
-                                tCorner = i;
+                                tCorner = top[i];
                                 break;
                             } else {
-                                bCorner = i;
+                                bCorner = bottom[i];
                                 break;
                             }
                         }
@@ -340,36 +360,20 @@ public class JSquareOne extends JComponent {
             }
         }
 
-        public int gettEdge() {
+        public Piece gettEdge() {
             return tEdge;
         }
 
-        public void settEdge(int tEdge) {
-            this.tEdge = tEdge;
-        }
-
-        public int gettCorner() {
+        public Piece gettCorner() {
             return tCorner;
         }
 
-        public void settCorner(int tCorner) {
-            this.tCorner = tCorner;
-        }
-
-        public int getbEdge() {
+        public Piece getbEdge() {
             return bEdge;
         }
 
-        public void setbEdge(int bEdge) {
-            this.bEdge = bEdge;
-        }
-
-        public int getbCorner() {
+        public Piece getbCorner() {
             return bCorner;
-        }
-
-        public void setbCorner(int bCorner) {
-            this.bCorner = bCorner;
         }
     }
 }

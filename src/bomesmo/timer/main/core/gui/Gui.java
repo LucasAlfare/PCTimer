@@ -9,6 +9,7 @@ public class Gui extends javax.swing.JFrame {
      */
     public Gui() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     private javax.swing.JButton caleCheckBt;
