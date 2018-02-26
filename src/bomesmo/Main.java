@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Main {
 
+    //Main prefered shapes holder list
     public static ArrayList<Table>  shapesPreferidos = new ArrayList<>();
 
     public static void main(String[] args) {
