@@ -1,4 +1,4 @@
-package bomesmo.paritychecker.main;
+package bomesmo.paritychecker.main.cale;
 
 import com.main.puzzle.Piece;
 import com.main.puzzle.SquareOne;
@@ -8,13 +8,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ParityChecker {
+public class CaleChecker {
 
     private SquareOne squareOne;
     private List<Object> pCheckerSearches;
     private long elapsedTime;
 
-    public ParityChecker(SquareOne squareOne) {
+    public CaleChecker(SquareOne squareOne) {
         this.squareOne = squareOne;
         pCheckerSearches = Collections.synchronizedList(new ArrayList<>());
         //this.squareOne.applyStringSequence("(4, 0)/(-1, 5)/(-5, 4)/(6, -3)/(5, -1)/(0, -2)/(6, -3)/(-3, 0)/(-5, -1)/(6, -2)/(4, -3)/");

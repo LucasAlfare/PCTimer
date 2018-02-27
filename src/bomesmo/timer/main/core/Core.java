@@ -1,7 +1,7 @@
 package bomesmo.timer.main.core;
 
 import bomesmo.Main;
-import bomesmo.paritychecker.main.ParityChecker;
+import bomesmo.paritychecker.main.cale.CaleChecker;
 import bomesmo.timer.main.auxiliar.Misc;
 import bomesmo.timer.main.core.gui.Gui;
 import bomesmo.timer.main.core.gui.Log;
@@ -51,7 +51,7 @@ public class Core {
 
     private void setupCaleCheckBt() {
         gui.getCaleCheckBt().addActionListener(e -> {
-            ParityChecker parityChecker = new ParityChecker(gui.getPreview().getSquareOne());
+            CaleChecker caleChecker = new CaleChecker(gui.getPreview().getSquareOne());
 
             Piece[] edgesTopBottom = new Piece[]{
                     gui.getPreview().getCustomMouseAdapter().gettEdge(),
@@ -63,7 +63,7 @@ public class Core {
                     gui.getPreview().getCustomMouseAdapter().getbCorner()
             };
 
-            gui.getParityResultArea().append(parityChecker.isEven(edgesTopBottom, cornersTopBottom) + ".");
+            gui.getParityResultArea().append(caleChecker.isEven(edgesTopBottom, cornersTopBottom) + ".");
         });
     }
 
