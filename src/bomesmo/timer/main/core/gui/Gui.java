@@ -112,7 +112,7 @@ public class Gui extends javax.swing.JFrame {
         btAddShape = new javax.swing.JButton();
         deletarShapeBt = new javax.swing.JButton();
         painelPreview = new javax.swing.JPanel();
-        preview = new JSquareOne();
+        preview = new JSquareOne(Gui.this);
         caleCheckBt = new javax.swing.JButton();
         tracingCheckBt = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();

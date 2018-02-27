@@ -50,6 +50,7 @@ public class SBL implements KeyListener {
             core.getGui().getLblScramble().setText("loading....");//first
             String currSeq = core.getScramble().getSequence();
             core.getGui().getLblScramble().setText(currSeq);//on sucess
+            core.getGui().getParityResultArea().setText("");
 
             if (core.isSquareOneEntered()) {
                 core.getGui().getPreview().setSquareOne(new SquareOne(currSeq));

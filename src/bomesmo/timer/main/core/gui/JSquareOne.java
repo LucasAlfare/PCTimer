@@ -23,13 +23,13 @@ public class JSquareOne extends JComponent {
     private static final int BOTTOM_ANCHOR_Y = 85;
 
     private SquareOne squareOne;
-    private CustomMosueAdapter customMouseAdapter;
+    private CustomMouseAdapter customMouseAdapter;
+    private Gui gui;
 
-    //private ArrayList<Piece> top = new ArrayList<>(), bottom = new ArrayList<>();
-    private Piece[] top = new Piece[8], bottom = new Piece[8];
-
-    public JSquareOne() {
+    public JSquareOne(Gui gui) {
         squareOne = new SquareOne();
+        this.gui = gui;
+
         setupMouseAdapter();
 
         setPreferredSize(new Dimension(350, 220));
@@ -51,21 +51,6 @@ public class JSquareOne extends JComponent {
 
         drawFace(graphics2D, true, TOP_ANCHOR_X, TOP_ANCHOR_Y);
         drawFace(graphics2D, false, BOTTOM_ANCHOR_X, BOTTOM_ANCHOR_Y);
-    }
-
-    public void drawFace(Graphics2D graphics2D, boolean face, double x, double y) {
-        ArrayList<Path2D[]> pieces = piecesToDraw(face, x, y);
-
-        for (int i = 0; i < pieces.size(); i++) {
-            for (int j = 0; j < pieces.get(i).length; j++) {
-                graphics2D.setColor(getColorByChar(getSquareOne().getPieces(face).get(i).getColors()[j]));
-                graphics2D.fill(pieces.get(i)[j]);
-                graphics2D.setColor(Color.black);
-                graphics2D.draw(pieces.get(i)[j]);
-            }
-        }
-
-        repaint();
     }
 
     private static ArrayList<double[]> rotatedPoints(ArrayList<double[]> points, double[] anchorPoint, double angle) {
@@ -211,6 +196,25 @@ public class JSquareOne extends JComponent {
         return path;
     }
 
+    public void drawFace(Graphics2D graphics2D, boolean face, double x, double y) {
+        ArrayList<DrawedPiece> pieces = piecesToDraw(face, x, y);
+
+        for (int i = 0; i < pieces.size(); i++) {
+            for (int j = 0; j < pieces.get(i).getPiecePolygons().length; j++) {
+
+                //TODO: check ArrayIndexOutOfBoundsException: 2* cause
+                graphics2D.setColor(getColorByChar(getSquareOne().getPieces(face).get(i).getColors()[j]));
+                //
+
+                graphics2D.fill(pieces.get(i).getPiecePolygons()[j]);
+                graphics2D.setColor(Color.black);
+                graphics2D.draw(pieces.get(i).getPiecePolygons()[j]);
+            }
+        }
+
+        repaint();
+    }
+
     private static double[] rotatedPoint(double[] point, double[] anchorPoint, double angle) {
         double x1 = point[0] - anchorPoint[0];
         double y1 = point[1] - anchorPoint[1];
@@ -221,38 +225,27 @@ public class JSquareOne extends JComponent {
         return new double[]{x2 + anchorPoint[0], y2 + anchorPoint[1]};
     }
 
-    private ArrayList<Path2D[]> piecesToDraw(boolean face, double x, double y) {
-        if (face) {
-            top = new Piece[getSquareOne().getPieces(true).size()];
-        } else {
-            bottom = new Piece[getSquareOne().getPieces(false).size()];
-        }
+    private ArrayList<DrawedPiece> piecesToDraw(boolean face, double x, double y) {
+        ArrayList<DrawedPiece> pieces = new ArrayList<>();
 
-        ArrayList<Path2D[]> pieces = new ArrayList<>();
-
-        int i = 0;
         boolean prevIsMeio = getSquareOne().getPieces(face).get(0).getColors().length == 2;
-        //double currAngle = 0;
         double currAngle = prevIsMeio ? -30 : -45;
         for (Piece p : getSquareOne().getPieces(face)) {
             currAngle += prevIsMeio && p.getColors().length == 2 ? 30 : (!prevIsMeio && p.getColors().length != 2 ? 60 : 45);
             prevIsMeio = p.getColors().length == 2;
-            pieces.add(p.getColors().length == 2 ? meioFull(x, y, currAngle) : cantoFull(x, y, currAngle));
 
-            if (face) {
-                top[i] = p;
-            } else {
-                bottom[i] = p;
-            }
-
-            i++;
+            pieces.add(
+                    p.getColors().length == 2 ?
+                            new DrawedPiece(meioFull(x, y, currAngle), p) :
+                            new DrawedPiece(cantoFull(x, y, currAngle), p));
         }
 
         return pieces;
     }
 
     private void setupMouseAdapter() {
-        customMouseAdapter = new CustomMosueAdapter(
+        removeMouseListener(customMouseAdapter);
+        customMouseAdapter = new CustomMouseAdapter(
                 piecesToDraw(true, TOP_ANCHOR_X, TOP_ANCHOR_Y),
                 piecesToDraw(false, BOTTOM_ANCHOR_X, BOTTOM_ANCHOR_Y));
         addMouseListener(customMouseAdapter);
@@ -294,6 +287,7 @@ public class JSquareOne extends JComponent {
 
     public void setSquareOne(SquareOne squareOne) {
         this.squareOne = squareOne;
+        setupMouseAdapter();
     }
 
     public double getL() {
@@ -304,56 +298,63 @@ public class JSquareOne extends JComponent {
         JSquareOne.l = l;
     }
 
-    public CustomMosueAdapter getCustomMouseAdapter() {
+    public CustomMouseAdapter getCustomMouseAdapter() {
         return customMouseAdapter;
     }
 
-    public void setCustomMouseAdapter(CustomMosueAdapter customMouseAdapter) {
+    public void setCustomMouseAdapter(CustomMouseAdapter customMouseAdapter) {
         this.customMouseAdapter = customMouseAdapter;
     }
 
-    public class CustomMosueAdapter extends MouseAdapter {
+    public class CustomMouseAdapter extends MouseAdapter {
 
-        private ArrayList<Path2D[]> topDrawedPieces, bottomDrawed;
+        private ArrayList<DrawedPiece> topDrawedPieces, bottomDrawedPieces;
         private Piece tEdge, tCorner, bEdge, bCorner;
 
-        public CustomMosueAdapter(ArrayList<Path2D[]> topDrawedPieces, ArrayList<Path2D[]> bottomDrawed) {
+        CustomMouseAdapter(ArrayList<DrawedPiece> topDrawedPieces, ArrayList<DrawedPiece> bottomDrawedPieces) {
             this.topDrawedPieces = topDrawedPieces;
-            this.bottomDrawed = bottomDrawed;
+            this.bottomDrawedPieces = bottomDrawedPieces;
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
-            setPiecesIndexClicked(true, e.getPoint());
-            setPiecesIndexClicked(false, e.getPoint());
 
-            JOptionPane.showMessageDialog(JSquareOne.this,
-                    "topo:  " + (tEdge) + "/" + (tCorner) +
-                            "\nbase: " + (bEdge) + "/" + (bCorner));
+            setClickedPieces(e.getPoint());
+
+            String log = "top edge selected: " + gettEdge() + "\n";
+            log += "top corner selected: " + gettCorner() + "\n";
+
+            log += "bottom edge selected: " + getbEdge() + "\n";
+            log += "bottom corner selected: " + getbCorner() + "\n\n\n";
+
+            gui.getParityResultArea().setText(log);
         }
 
-        private void setPiecesIndexClicked(boolean face, Point2D clikcedPoint) {
-            ArrayList<Path2D[]> draws = face ? topDrawedPieces : bottomDrawed;
-            for (int i = 0; i < draws.size(); i++) {
-                for (int j = 0; j < draws.get(i).length; j++) {
-                    if (draws.get(i)[j].contains(clikcedPoint)) {
-                        if (isMeio(draws.get(i)[0])) {
-                            if (face) {
-                                tEdge = top[i];
-                                break;
-                            } else {
-                                bEdge = bottom[i];
-                                break;
-                            }
+        private void setClickedPieces(Point2D clickedPoint) {
+            for (DrawedPiece x : topDrawedPieces) {
+                for (Path2D y : x.getPiecePolygons()) {
+                    if (y.contains(clickedPoint)) {
+                        if (isMeio(x.getPiecePolygons()[0])) {
+                            this.tEdge = x.getPiece();
+                            break;
                         } else {
-                            if (face) {
-                                tCorner = top[i];
-                                break;
-                            } else {
-                                bCorner = bottom[i];
-                                break;
-                            }
+                            this.tCorner = x.getPiece();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            for (DrawedPiece x : bottomDrawedPieces) {
+                for (Path2D y : x.getPiecePolygons()) {
+                    if (y.contains(clickedPoint)) {
+                        if (isMeio(x.getPiecePolygons()[0])) {
+                            this.bEdge = x.getPiece();
+                            break;
+                        } else {
+                            this.bCorner = x.getPiece();
+                            break;
                         }
                     }
                 }

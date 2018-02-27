@@ -63,7 +63,7 @@ public class Core {
                     gui.getPreview().getCustomMouseAdapter().getbCorner()
             };
 
-            gui.getParityResultArea().setText(parityChecker.isEven(edgesTopBottom, cornersTopBottom) + ".");
+            gui.getParityResultArea().append(parityChecker.isEven(edgesTopBottom, cornersTopBottom) + ".");
         });
     }
 
@@ -174,6 +174,7 @@ public class Core {
                         gui.getDeletarShapeBt(),
                         gui.getBtAddShape(),
                         gui.getPreview(),
+                        gui.getParityResultArea(),
                         gui.getCaleCheckBt(),
                         gui.getTracingCheckBt()
                 )
