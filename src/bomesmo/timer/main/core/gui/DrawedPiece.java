@@ -4,6 +4,7 @@ import com.main.puzzle.Piece;
 
 import java.awt.geom.Path2D;
 
+//A holder class
 public class DrawedPiece {
 
     private Path2D[] piecePolygons;
