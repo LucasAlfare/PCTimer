@@ -43,8 +43,8 @@ public class Core {
         setupDetalharStat();
         setupAddCubeShape();
         setupDeletarShapeSelecionado();
-        setupSpaceListener();
         setupCaleCheckBt();
+        setupSpaceListener();
 
         this.gui.setVisible(true);
     }
