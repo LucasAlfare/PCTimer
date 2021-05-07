@@ -49,7 +49,8 @@ class TimerManager : Listenable(), EventListener {
             Event.TIMER_CANCEL -> {
                 //TODO
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 
