@@ -33,10 +33,7 @@ class DataManager : Listenable(), EventListener {
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
-            Event.DATA_CLEAR -> {
-                println("DATA_CLEAR received")
-                handleDataClear()
-            }
+            Event.DATA_CLEAR -> handleDataClear()
 
             Event.DATA_ITEM_CREATE -> {
                 println("DATA_ITEM_CREATE received")
@@ -62,17 +59,10 @@ class DataManager : Listenable(), EventListener {
                 )
             }
 
-            Event.DATA_ITEM_REMOVE -> {
-                println("DATA_ITEM_REMOVE received")
-                handleDataItemRemove(data as UUID)
-            }
+            Event.DATA_ITEM_REMOVE -> handleDataItemRemove(data as UUID)
+            Event.DATA_GET -> handleDataGet()
 
-            Event.DATA_GET -> {
-                println("DATA_GET received")
-                handleDataGet()
-            }
-            else -> {
-            }
+            else -> { }
         }
     }
 

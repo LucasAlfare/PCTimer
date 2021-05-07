@@ -3,15 +3,24 @@ package com.fltimer.main.gui
 import com.fltimer.main.Event
 import com.fltimer.main.EventListener
 import com.fltimer.main.Listenable
+import com.fltimer.main.data.Solve
 import com.fltimer.main.timestamp
 import java.awt.FlowLayout
 import java.awt.Font
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
+import javax.swing.JComponent
 import javax.swing.JFrame
 import javax.swing.JLabel
 
-class TestGui : JFrame() {
+//compatibility only with Java/Swing. Android coming soon
+interface GuiModel {
+
+    fun getScramble(): JComponent
+    fun getDisplay(): JComponent
+}
+
+class TestGui : JFrame(), GuiModel {
 
     var scramble: JLabel? = null
     var display: JLabel? = null
@@ -30,8 +39,17 @@ class TestGui : JFrame() {
         add(scramble)
         add(display)
     }
+
+    override fun getScramble(): JComponent {
+        return scramble!!
+    }
+
+    override fun getDisplay(): JComponent {
+        return display!!
+    }
 }
 
+@Suppress("MemberVisibilityCanBePrivate")
 class GuiManager : Listenable(), EventListener {
 
     private val gui = TestGui()
@@ -41,14 +59,11 @@ class GuiManager : Listenable(), EventListener {
     private var tmpScramble = ""
     private var tmpPenalty = ""
 
-
     init {
         gui.addKeyListener(object : KeyAdapter() {
             override fun keyReleased(e: KeyEvent?) {
                 if (e!!.keyCode == KeyEvent.VK_SPACE) {
                     notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis())
-                } else if (e.keyCode == KeyEvent.VK_S) {
-                    notifyListeners(Event.SCRAMBLE_REQUEST_NEW)
                 }
             }
         })
@@ -58,25 +73,11 @@ class GuiManager : Listenable(), EventListener {
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
-            Event.TIMER_UPDATE -> {
-                handleTimerUpdate(data as Long)
-            }
-
-            Event.TIMER_STOPPED -> {
-                handleTimerStopped(data as Long)
-            }
-
-            Event.DATA_RESPONSE -> {
-                handleDataResponse(data as ArrayList<*>)
-            }
-
-            Event.DATA_CHANGED -> {
-                handleDataChanged(data as ArrayList<*>)
-            }
-
-            Event.SCRAMBLE_CHANGED -> {
-                handleScrambleChanged(data as String)
-            }
+            Event.TIMER_UPDATE -> handleTimerUpdate(data as Long)
+            Event.TIMER_STOPPED -> handleTimerStopped(data as Long)
+            Event.DATA_RESPONSE -> handleDataResponse(data as ArrayList<*>)
+            Event.DATA_CHANGED -> handleDataChanged(data as ArrayList<*>)
+            Event.SCRAMBLE_CHANGED -> handleScrambleChanged(data as String)
 
             else -> {
             }
@@ -84,12 +85,18 @@ class GuiManager : Listenable(), EventListener {
     }
 
     fun handleTimerUpdate(time: Long) {
-        gui.display!!.text = time.timestamp()
+        (gui.getDisplay() as JLabel).text = time.timestamp()
     }
 
     fun handleTimerStopped(time: Long) {
         tmpTime = time
-        notifyListeners(Event.DATA_ITEM_CREATE, arrayOf(tmpTime, tmpScramble, tmpPenalty))
+        notifyListeners(
+            Event.DATA_ITEM_CREATE, arrayOf(
+                tmpTime,
+                tmpScramble,
+                tmpPenalty
+            )
+        )
         notifyListeners(Event.SCRAMBLE_REQUEST_NEW)
     }
 
@@ -105,7 +112,7 @@ class GuiManager : Listenable(), EventListener {
 
     fun handleScrambleChanged(scramble: String) {
         tmpScramble = scramble
-        gui.scramble!!.text = tmpScramble
+        (gui.getScramble() as JLabel).text = tmpScramble
         println("[SCRAMBLE_CHANGED] $tmpScramble")
     }
 }

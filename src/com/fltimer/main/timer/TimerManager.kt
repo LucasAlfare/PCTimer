@@ -34,21 +34,10 @@ class TimerManager : Listenable(), EventListener {
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
-            Event.TIMER_TOGGLE_DOWN -> {
-                handleTimerToggle(false, data as Long)
-            }
-
-            Event.TIMER_TOGGLE_UP -> {
-                handleTimerToggle(true, data as Long)
-            }
-
-            Event.TIMER_SET_WCA_INSPECTION -> {
-                handleTimerSetWcaInspection(data as Boolean)
-            }
-
-            Event.TIMER_CANCEL -> {
-                //TODO
-            }
+            Event.TIMER_TOGGLE_DOWN -> handleTimerToggle(false, data as Long)
+            Event.TIMER_TOGGLE_UP -> handleTimerToggle(true, data as Long)
+            Event.TIMER_SET_WCA_INSPECTION -> handleTimerSetWcaInspection(data as Boolean)
+            Event.TIMER_CANCEL -> { /*TODO*/ }
             else -> {
             }
         }
