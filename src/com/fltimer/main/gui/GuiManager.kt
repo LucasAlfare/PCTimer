@@ -52,7 +52,9 @@ class TestGui : JFrame(), GuiModel {
 @Suppress("MemberVisibilityCanBePrivate")
 class GuiManager : Listenable(), EventListener {
 
-    private val gui = TestGui()
+    //private val gui = TestGui()
+    private val gui = Gui()
+    private val details = Details()
     private var solvesRef: ArrayList<*>? = null
 
     private var tmpTime = 0L
@@ -60,7 +62,7 @@ class GuiManager : Listenable(), EventListener {
     private var tmpPenalty = ""
 
     init {
-        gui.addKeyListener(object : KeyAdapter() {
+        gui.contentPane.addKeyListener(object : KeyAdapter() {
             override fun keyReleased(e: KeyEvent?) {
                 if (e!!.keyCode == KeyEvent.VK_SPACE) {
                     notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis())
@@ -68,7 +70,11 @@ class GuiManager : Listenable(), EventListener {
             }
         })
 
-        gui.isVisible = true
+        gui.details.addActionListener {
+            details.start()
+        }
+
+        gui.start()
     }
 
     override fun onEvent(event: Event, data: Any?) {
@@ -85,7 +91,7 @@ class GuiManager : Listenable(), EventListener {
     }
 
     fun handleTimerUpdate(time: Long) {
-        (gui.getDisplay() as JLabel).text = time.timestamp()
+        (gui.display as JLabel).text = time.timestamp()
     }
 
     fun handleTimerStopped(time: Long) {
@@ -112,7 +118,7 @@ class GuiManager : Listenable(), EventListener {
 
     fun handleScrambleChanged(scramble: String) {
         tmpScramble = scramble
-        (gui.getScramble() as JLabel).text = tmpScramble
+        (gui.scramble as JLabel).text = tmpScramble
         println("[SCRAMBLE_CHANGED] $tmpScramble")
     }
 }
