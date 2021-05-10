@@ -1,8 +1,8 @@
 package com.fltimer.main.gui
 
-import com.fltimer.main.gui.JRelativeLayout.Constraints.MATCH_PARENT
-import com.fltimer.main.gui.JRelativeLayout.relativeConstraints
-import java.awt.FlowLayout
+import com.fltimer.main.gui.layout.JRelativeLayout
+import com.fltimer.main.gui.layout.JRelativeLayout.Constraints.MATCH_PARENT
+import com.fltimer.main.gui.layout.JRelativeLayout.relativeConstraints
 import javax.swing.*
 
 class Details : JFrame() {

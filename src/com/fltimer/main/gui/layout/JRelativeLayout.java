@@ -1,4 +1,4 @@
-package com.fltimer.main.gui;
+package com.fltimer.main.gui.layout;
 
 import javax.swing.*;
 import java.awt.*;
