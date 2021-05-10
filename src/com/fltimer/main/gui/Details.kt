@@ -17,9 +17,8 @@ class Details : JFrame() {
     var best100 = JButton("best100: - -")
 
     var nSolves = JLabel()
-    var list = JList<String>()
+    var resultArea = JTextArea()
 
-    private val listScrollPane = JScrollPane()
     private val titleBorder = BorderFactory.createTitledBorder("")
 
     init {
@@ -27,9 +26,8 @@ class Details : JFrame() {
         defaultCloseOperation = DISPOSE_ON_CLOSE
         setLocationRelativeTo(null)
 
-        listScrollPane.border = titleBorder
+        resultArea.border = titleBorder
         setNumSolves(0)
-        listScrollPane.setViewportView(list)
 
         layout = JRelativeLayout()
         add(sessionMean, relativeConstraints().parentStart().parentTop().marginTop(16).marginStart(8))
@@ -41,10 +39,11 @@ class Details : JFrame() {
         add(best50, relativeConstraints().parentStart().below(best12).marginTop(8).marginStart(8))
         add(best100, relativeConstraints().parentStart().below(best50).marginTop(8).marginStart(8))
         add(
-            listScrollPane,
+            resultArea,
             relativeConstraints()
                 .parentBottom()
                 .percentileWidth(MATCH_PARENT)
+                .percentileHeight(30.0)
                 .marginStart(16)
                 .marginEnd(16)
                 .marginBottom(16)

@@ -3,10 +3,14 @@ package com.fltimer.main.scramble
 import com.fltimer.main.Event
 import com.fltimer.main.EventListener
 import com.fltimer.main.Listenable
-import kotlin.math.floor
+import java.util.*
 
-class TestScrambler {
-    fun getScramble() = "scramble-${floor(Math.random() * 100)}"
+interface Scrambler {
+
+    val rand: Random
+        get() = Random()
+
+    fun getScramble(): String
 }
 
 /**
@@ -23,7 +27,7 @@ class ScrambleManager : Listenable(), EventListener {
     private var current = ""
     private var last = ""
 
-    private var scrambler = TestScrambler()
+    private var scrambler = PocketCubeScrambler()
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {

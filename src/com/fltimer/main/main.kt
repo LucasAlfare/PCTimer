@@ -6,13 +6,17 @@ import com.fltimer.main.scramble.ScrambleManager
 import com.fltimer.main.timer.TimerManager
 
 fun main() {
+    val scrambleManager = ScrambleManager()
+
     //order matters?
     setupManagers(
         TimerManager(),
         DataManager(),
-        ScrambleManager(),
+        scrambleManager,
         GuiManager()
     )
+
+    scrambleManager.handleScrambleRequestNew()
 }
 
 fun setupManagers(vararg managers: Listenable) {

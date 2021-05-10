@@ -71,6 +71,7 @@ class GuiManager : Listenable(), EventListener {
         })
 
         gui.details.addActionListener {
+
             details.start()
         }
 

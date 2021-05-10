@@ -19,7 +19,7 @@ class Gui : JFrame() {
         setSize(400, 600)
         defaultCloseOperation = 3
 
-        scramble.font = Font(scramble.font.name, scramble.font.style, 24)
+        scramble.font = Font(scramble.font.name, scramble.font.style, 16)
         display.font = Font(scramble.font.name, scramble.font.style, 70)
         details.font = Font(scramble.font.name, scramble.font.style, 24)
         stats.font = Font(scramble.font.name, scramble.font.style, 24)
