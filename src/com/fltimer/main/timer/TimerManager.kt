@@ -24,8 +24,13 @@ import java.util.*
  */
 class TimerManager : Listenable(), EventListener {
 
+    private enum class State {
+        STOPPED,
+        SOLVING
+    }
+
     private var useInspection = false
-    private var solving = false
+    private var state = State.STOPPED
     private var startTime = 0L
 
     var elapsedTime = 0L
@@ -37,7 +42,8 @@ class TimerManager : Listenable(), EventListener {
             Event.TIMER_TOGGLE_DOWN -> handleTimerToggle(false, data as Long)
             Event.TIMER_TOGGLE_UP -> handleTimerToggle(true, data as Long)
             Event.TIMER_SET_WCA_INSPECTION -> handleTimerSetWcaInspection(data as Boolean)
-            Event.TIMER_CANCEL -> { /*TODO*/ }
+            Event.TIMER_CANCEL -> { /*TODO*/
+            }
             else -> {
             }
         }
@@ -49,36 +55,36 @@ class TimerManager : Listenable(), EventListener {
 
     fun handleTimerToggle(up: Boolean, time: Long) {
         if (up) { // releases the toggle "key" (any trigger)
-            if (!solving) {
-                startTimer(time)
-            } else {
-                stopTimer()
+            when (state) {
+                State.STOPPED -> {
+                    if (repeater == null) {
+                        repeater = Timer()
+                        startTime = time
+                        repeater!!.scheduleAtFixedRate(object : TimerTask() {
+                            override fun run() {
+                                elapsedTime = System.currentTimeMillis() - startTime
+                                notifyListeners(Event.TIMER_UPDATE, elapsedTime)
+                            }
+                        }, 0, 1)
+                        state = State.SOLVING
+                        notifyListeners(Event.TIMER_STARTED)
+                    }
+                }
             }
         } else {
+            when (state) {
+                State.STOPPED -> {
+                    if (repeater != null) {
+                        repeater = null
+                    }
+                }
 
-        }
-    }
-
-    private fun startTimer(currentTime: Long) {
-        startTime = currentTime
-
-        repeater = Timer()
-        repeater!!.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                elapsedTime = System.currentTimeMillis() - startTime
-                notifyListeners(Event.TIMER_UPDATE, elapsedTime)
+                State.SOLVING -> {
+                    repeater!!.cancel()
+                    state = State.STOPPED
+                    notifyListeners(Event.TIMER_STOPPED, elapsedTime)
+                }
             }
-        }, 0, 1)
-
-        solving = true
-        notifyListeners(Event.TIMER_STARTED)
-    }
-
-    private fun stopTimer() {
-        repeater!!.cancel()
-        repeater = null
-        solving = false
-
-        notifyListeners(Event.TIMER_STOPPED, elapsedTime)
+        }
     }
 }

@@ -77,6 +77,12 @@ class GuiManager : Listenable(), EventListener {
 
     private fun setupGui() {
         gui.contentPane.addKeyListener(object : KeyAdapter() {
+            override fun keyPressed(e: KeyEvent?) {
+                if (e!!.keyCode == KeyEvent.VK_SPACE) {
+                    notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis())
+                }
+            }
+
             override fun keyReleased(e: KeyEvent?) {
                 if (e!!.keyCode == KeyEvent.VK_SPACE) {
                     notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis())
