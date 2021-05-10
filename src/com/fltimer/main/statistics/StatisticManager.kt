@@ -20,8 +20,8 @@ data class StatisticResult(val statisticId: StatisticId, val result: Long, val r
 
 /**
  * In Events:
- * - STATISTIC_GET_ALL_RESULTS;
- * - STATISTIC_GET_RESULT_OF(params: StatisticId).
+ * - STATISTIC_GET_ALL_RESULTS(params: solves reference);
+ * - STATISTIC_GET_RESULT_OF(params: StatisticId, solves reference).
  *
  * Out Events:
  * - STATISTIC_RESPONSE_ALL_RESULT(carries: StatisticResult of all statistics in a array);
@@ -29,6 +29,7 @@ data class StatisticResult(val statisticId: StatisticId, val result: Long, val r
  */
 class StatisticManager : Listenable(), EventListener {
 
+    private var solvesRef: ArrayList<Solve>? = null
     private val statisticsMap = HashMap<StatisticId, Statistic>()
 
     init {
@@ -39,22 +40,26 @@ class StatisticManager : Listenable(), EventListener {
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
             Event.STATISTIC_GET_ALL_RESULTS -> {
-                handleStatisticGetAllResults()
+                handleStatisticGetAllResults(data as ArrayList<Solve>)
             }
 
             Event.STATISTIC_GET_RESULT_OF -> {
-                handleStatisticGetResultOf(data as StatisticId)
+                val params = data as Array<*>
+                handleStatisticGetResultOf(params[0] as StatisticId, params[1] as ArrayList<Solve>)
             }
             else -> {
             }
         }
     }
 
-    private fun handleStatisticGetAllResults() {
-        notifyListeners(Event.STATISTIC_RESPONSE_ALL_RESULT, statisticsMap.values.toTypedArray())
+    private fun handleStatisticGetAllResults(solves: ArrayList<Solve>) {
+        val results = arrayListOf<StatisticResult>()
+        statisticsMap.values.forEach { statistic -> results.add(statistic.statisticResult(solves)) }
+        notifyListeners(Event.STATISTIC_RESPONSE_ALL_RESULT, results)
     }
 
-    private fun handleStatisticGetResultOf(statisticId: StatisticId) {
-        notifyListeners(Event.STATISTIC_RESPONSE_RESULT_OF, statisticsMap[statisticId])
+    private fun handleStatisticGetResultOf(statisticId: StatisticId, solves: ArrayList<Solve>) {
+        val result = statisticsMap[statisticId]!!.statisticResult(solves)
+        notifyListeners(Event.STATISTIC_RESPONSE_RESULT_OF, result)
     }
 }

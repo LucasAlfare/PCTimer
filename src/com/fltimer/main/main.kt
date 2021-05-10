@@ -3,6 +3,7 @@ package com.fltimer.main
 import com.fltimer.main.data.DataManager
 import com.fltimer.main.gui.GuiManager
 import com.fltimer.main.scramble.ScrambleManager
+import com.fltimer.main.statistics.StatisticManager
 import com.fltimer.main.timer.TimerManager
 
 fun main() {
@@ -10,9 +11,10 @@ fun main() {
 
     //order matters?
     setupManagers(
+        scrambleManager,
         TimerManager(),
         DataManager(),
-        scrambleManager,
+        StatisticManager(),
         GuiManager()
     )
 

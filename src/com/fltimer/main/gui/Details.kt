@@ -7,16 +7,15 @@ import javax.swing.*
 
 class Details : JFrame() {
 
-    var sessionMean = JButton("session mean: - -")
-    var sessionAvg = JButton("session avg: - -")
-    var best = JButton("best: - -")
-    var worst = JButton("worst: - -")
-    var best5 = JButton("best5: - -")
-    var best12 = JButton("best12: - -")
-    var best50 = JButton("best50: - -")
-    var best100 = JButton("best100: - -")
+    val sessionMean = JButton("session mean: - -")
+    val sessionAvg = JButton("session avg: - -")
+    val best = JButton("best: - -")
+    val worst = JButton("worst: - -")
+    val best5 = JButton("best5: - -")
+    val best12 = JButton("best12: - -")
+    val best50 = JButton("best50: - -")
+    val best100 = JButton("best100: - -")
 
-    var nSolves = JLabel()
     var resultArea = JTextArea()
 
     private val titleBorder = BorderFactory.createTitledBorder("")

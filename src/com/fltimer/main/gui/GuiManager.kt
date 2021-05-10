@@ -4,6 +4,9 @@ import com.fltimer.main.Event
 import com.fltimer.main.EventListener
 import com.fltimer.main.Listenable
 import com.fltimer.main.data.Solve
+import com.fltimer.main.statistics.Statistic
+import com.fltimer.main.statistics.StatisticId
+import com.fltimer.main.statistics.StatisticResult
 import com.fltimer.main.timestamp
 import java.awt.FlowLayout
 import java.awt.Font
@@ -62,6 +65,17 @@ class GuiManager : Listenable(), EventListener {
     private var tmpPenalty = ""
 
     init {
+        setupDetails()
+        setupGui()
+    }
+
+    private fun setupDetails() {
+        details.sessionMean.addActionListener {
+            notifyListeners(Event.STATISTIC_GET_RESULT_OF, arrayOf(StatisticId.MEAN, solvesRef))
+        }
+    }
+
+    private fun setupGui() {
         gui.contentPane.addKeyListener(object : KeyAdapter() {
             override fun keyReleased(e: KeyEvent?) {
                 if (e!!.keyCode == KeyEvent.VK_SPACE) {
@@ -85,10 +99,15 @@ class GuiManager : Listenable(), EventListener {
             Event.DATA_RESPONSE -> handleDataResponse(data as ArrayList<*>)
             Event.DATA_CHANGED -> handleDataChanged(data as ArrayList<*>)
             Event.SCRAMBLE_CHANGED -> handleScrambleChanged(data as String)
+            Event.STATISTIC_RESPONSE_RESULT_OF -> handleStatisticResponseResultOf(data as StatisticResult)
 
             else -> {
             }
         }
+    }
+
+    private fun handleStatisticResponseResultOf(statisticResult: StatisticResult) {
+        println(statisticResult)
     }
 
     fun handleTimerUpdate(time: Long) {
