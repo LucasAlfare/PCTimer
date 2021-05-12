@@ -4,6 +4,7 @@ import com.fltimer.main.Event
 import com.fltimer.main.EventListener
 import com.fltimer.main.Listenable
 import java.util.*
+import kotlin.math.log
 
 /**
  * In Events:
@@ -48,6 +49,7 @@ class TimerManager : Listenable(), EventListener {
 
     fun handleTimerToggle(up: Boolean, time: Long) {
         if (up) { // releases the toggle "key" (any trigger)
+            //TODO: receive key code to increment field on any key up
             numUps++
             if (repeater == null && (numUps % 2 != 0)) {
                 repeater = Timer()
@@ -64,6 +66,7 @@ class TimerManager : Listenable(), EventListener {
             if (repeater != null) {
                 repeater!!.cancel()
                 repeater = null
+                notifyListeners(Event.TIMER_STOPPED, time - startTime)
             }
         }
     }
