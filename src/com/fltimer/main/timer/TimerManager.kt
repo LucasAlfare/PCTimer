@@ -24,17 +24,10 @@ import java.util.*
  */
 class TimerManager : Listenable(), EventListener {
 
-    private enum class State {
-        STOPPED,
-        SOLVING
-    }
-
     private var useInspection = false
-    private var state = State.STOPPED
+    private var numUps = 0
     private var startTime = 0L
-
-    var elapsedTime = 0L
-
+    private var elapsedTime = 0L
     private var repeater: Timer? = null
 
     override fun onEvent(event: Event, data: Any?) {
@@ -55,35 +48,22 @@ class TimerManager : Listenable(), EventListener {
 
     fun handleTimerToggle(up: Boolean, time: Long) {
         if (up) { // releases the toggle "key" (any trigger)
-            when (state) {
-                State.STOPPED -> {
-                    if (repeater == null) {
-                        repeater = Timer()
-                        startTime = time
-                        repeater!!.scheduleAtFixedRate(object : TimerTask() {
-                            override fun run() {
-                                elapsedTime = System.currentTimeMillis() - startTime
-                                notifyListeners(Event.TIMER_UPDATE, elapsedTime)
-                            }
-                        }, 0, 1)
-                        state = State.SOLVING
-                        notifyListeners(Event.TIMER_STARTED)
+            numUps++
+            if (repeater == null && (numUps % 2 != 0)) {
+                repeater = Timer()
+                startTime = time
+                repeater!!.scheduleAtFixedRate(object : TimerTask() {
+                    override fun run() {
+                        elapsedTime = System.currentTimeMillis() - startTime
+                        notifyListeners(Event.TIMER_UPDATE, elapsedTime)
                     }
-                }
+                }, 0, 1)
+                notifyListeners(Event.TIMER_STARTED)
             }
         } else {
-            when (state) {
-                State.STOPPED -> {
-                    if (repeater != null) {
-                        repeater = null
-                    }
-                }
-
-                State.SOLVING -> {
-                    repeater!!.cancel()
-                    state = State.STOPPED
-                    notifyListeners(Event.TIMER_STOPPED, elapsedTime)
-                }
+            if (repeater != null) {
+                repeater!!.cancel()
+                repeater = null
             }
         }
     }
