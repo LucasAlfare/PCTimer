@@ -1,4 +1,4 @@
-package com.fltimer.main
+package com.fltimer
 
 /**
  * Converts a long to a timestamp in the format

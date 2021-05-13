@@ -1,6 +1,6 @@
-package com.fltimer.main.statistics
+package com.fltimer.statistics
 
-import com.fltimer.main.data.Solve
+import com.fltimer.data.Solve
 import java.util.*
 import kotlin.collections.ArrayList
 

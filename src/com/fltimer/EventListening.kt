@@ -1,4 +1,4 @@
-package com.fltimer.main
+package com.fltimer
 
 enum class Event {
     TIMER_TOGGLE_DOWN,

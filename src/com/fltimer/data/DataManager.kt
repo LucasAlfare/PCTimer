@@ -1,10 +1,10 @@
 @file:Suppress("MemberVisibilityCanBePrivate")
 
-package com.fltimer.main.data
+package com.fltimer.data
 
-import com.fltimer.main.Event
-import com.fltimer.main.EventListener
-import com.fltimer.main.Listenable
+import com.fltimer.Event
+import com.fltimer.EventListener
+import com.fltimer.Listenable
 import java.util.*
 import kotlin.collections.ArrayList
 

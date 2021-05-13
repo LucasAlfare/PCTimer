@@ -1,9 +1,9 @@
-package com.fltimer.main.statistics
+package com.fltimer.statistics
 
-import com.fltimer.main.Event
-import com.fltimer.main.EventListener
-import com.fltimer.main.Listenable
-import com.fltimer.main.data.Solve
+import com.fltimer.Event
+import com.fltimer.EventListener
+import com.fltimer.Listenable
+import com.fltimer.data.Solve
 
 enum class StatisticId {
     MEAN

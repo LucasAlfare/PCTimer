@@ -1,8 +1,8 @@
-package com.fltimer.main.timer
+package com.fltimer.timer
 
-import com.fltimer.main.Event
-import com.fltimer.main.EventListener
-import com.fltimer.main.Listenable
+import com.fltimer.Event
+import com.fltimer.EventListener
+import com.fltimer.Listenable
 import java.util.*
 import kotlin.math.log
 

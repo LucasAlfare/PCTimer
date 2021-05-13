@@ -1,8 +1,8 @@
-package com.fltimer.main.scramble
+package com.fltimer.scramble
 
-import com.fltimer.main.Event
-import com.fltimer.main.EventListener
-import com.fltimer.main.Listenable
+import com.fltimer.Event
+import com.fltimer.EventListener
+import com.fltimer.Listenable
 import java.util.*
 
 interface Scrambler {

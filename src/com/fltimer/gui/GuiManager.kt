@@ -1,13 +1,11 @@
-package com.fltimer.main.gui
+package com.fltimer.gui
 
-import com.fltimer.main.Event
-import com.fltimer.main.EventListener
-import com.fltimer.main.Listenable
-import com.fltimer.main.data.Solve
-import com.fltimer.main.statistics.Statistic
-import com.fltimer.main.statistics.StatisticId
-import com.fltimer.main.statistics.StatisticResult
-import com.fltimer.main.timestamp
+import com.fltimer.Event
+import com.fltimer.EventListener
+import com.fltimer.Listenable
+import com.fltimer.statistics.StatisticId
+import com.fltimer.statistics.StatisticResult
+import com.fltimer.timestamp
 import java.awt.FlowLayout
 import java.awt.Font
 import java.awt.event.KeyAdapter

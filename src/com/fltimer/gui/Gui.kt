@@ -1,8 +1,8 @@
-package com.fltimer.main.gui
+package com.fltimer.gui
 
-import com.fltimer.main.gui.layout.JRelativeLayout
-import com.fltimer.main.gui.layout.JRelativeLayout.relativeConstraints
-import com.fltimer.main.timestamp
+import com.fltimer.gui.layout.JRelativeLayout
+import com.fltimer.gui.layout.JRelativeLayout.relativeConstraints
+import com.fltimer.timestamp
 import java.awt.EventQueue
 import java.awt.Font
 import javax.swing.JButton

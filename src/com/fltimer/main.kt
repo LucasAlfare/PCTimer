@@ -1,10 +1,10 @@
-package com.fltimer.main
+package com.fltimer
 
-import com.fltimer.main.data.DataManager
-import com.fltimer.main.gui.GuiManager
-import com.fltimer.main.scramble.ScrambleManager
-import com.fltimer.main.statistics.StatisticManager
-import com.fltimer.main.timer.TimerManager
+import com.fltimer.data.DataManager
+import com.fltimer.gui.GuiManager
+import com.fltimer.scramble.ScrambleManager
+import com.fltimer.statistics.StatisticManager
+import com.fltimer.timer.TimerManager
 
 fun main() {
     val scrambleManager = ScrambleManager()
