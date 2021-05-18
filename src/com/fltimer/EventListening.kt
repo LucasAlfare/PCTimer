@@ -1,5 +1,16 @@
+/**
+ * This file contains the main code related to the Observer pattern.
+ *
+ * All the managers uses this to establish communication with the others, in order to
+ * keep then not plugged to themselves.
+ *
+ * @author Francisco Lucas, 2021.
+ */
 package com.fltimer
 
+/**
+ * The main enumeration holding all labels of events used through the application process.
+ */
 enum class Event {
     TIMER_TOGGLE_DOWN,
     TIMER_TOGGLE_UP,
@@ -32,10 +43,17 @@ enum class Event {
     STATISTIC_RESPONSE_RESULT_OF
 }
 
+/**
+ * Interface that makes the class able to receive events (with its respective data)
+ */
 interface EventListener {
     fun onEvent(event: Event, data: Any?)
 }
 
+/**
+ * Class that makes all its children able to send events/data to any other which is
+ * listening to.
+ */
 open class Listenable {
 
     private val listeners = arrayListOf<EventListener>()
