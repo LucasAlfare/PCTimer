@@ -3,6 +3,7 @@ package com.fltimer.timer
 import com.fltimer.Event
 import com.fltimer.EventListener
 import com.fltimer.Listenable
+import com.fltimer.timestamp
 import java.util.*
 import kotlin.math.log
 
@@ -15,7 +16,7 @@ import kotlin.math.log
  * - TIMER_CANCEL.
  *
  * Out Events:
- * - TIMER_UPDATE(carries: current elapsed time);
+ * - TIMER_UPDATE(carries: current formatted timer value);
  * - TIMER_INSPECTION_STARTED;
  * - TIMER_INSPECTION_STOPPED;
  * - TIMER_STARTED;
@@ -58,7 +59,7 @@ class TimerManager : Listenable(), EventListener {
 
     private fun startInspection() {
         inspecting = true
-        notifyListeners(Event.TIMER_UPDATE, 9999L)
+        notifyListeners(Event.TIMER_UPDATE, "inspecting...")
     }
 
     private fun startTimer(time: Long) {
@@ -68,7 +69,7 @@ class TimerManager : Listenable(), EventListener {
             repeater!!.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     elapsedTime = System.currentTimeMillis() - startTime
-                    notifyListeners(Event.TIMER_UPDATE, elapsedTime)
+                    notifyListeners(Event.TIMER_UPDATE, elapsedTime.timestamp())
                 }
             }, 0, 1)
             notifyListeners(Event.TIMER_STARTED)

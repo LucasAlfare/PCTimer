@@ -47,7 +47,7 @@ class GuiManager : Listenable(), EventListener {
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
-            Event.TIMER_UPDATE -> handleTimerUpdate(data as Long)
+            Event.TIMER_UPDATE -> handleTimerUpdate(data as String)
             Event.TIMER_STOPPED -> handleTimerStopped(data as Long)
             Event.DATA_RESPONSE -> handleDataResponse(data as ArrayList<*>)
             Event.DATA_CHANGED -> handleDataChanged(data as ArrayList<*>)
@@ -63,8 +63,8 @@ class GuiManager : Listenable(), EventListener {
         println(statisticResult)
     }
 
-    fun handleTimerUpdate(time: Long) {
-        (guiAdapter.display as JLabel).text = time.timestamp()
+    fun handleTimerUpdate(value: String) {
+        (guiAdapter.display as JLabel).text = value
     }
 
     fun handleTimerStopped(time: Long) {
