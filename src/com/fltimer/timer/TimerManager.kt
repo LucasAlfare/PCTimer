@@ -5,7 +5,6 @@ import com.fltimer.EventListener
 import com.fltimer.Listenable
 import com.fltimer.timestamp
 import java.util.*
-import kotlin.math.log
 
 /**
  * In Events:
