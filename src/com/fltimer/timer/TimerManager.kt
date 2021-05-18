@@ -25,7 +25,8 @@ import kotlin.math.log
  */
 class TimerManager : Listenable(), EventListener {
 
-    private var useInspection = false
+    private var useInspection = true
+    private var inspecting = false
     private var numUps = 0
     private var startTime = 0L
     private var elapsedTime = 0L
@@ -49,25 +50,53 @@ class TimerManager : Listenable(), EventListener {
 
     fun handleTimerToggle(up: Boolean, time: Long) {
         if (up) { // releases the toggle "key" (any trigger)
-            //TODO: receive key code to increment field on any key up
-            numUps++
-            if (repeater == null && (numUps % 2 != 0)) {
-                repeater = Timer()
-                startTime = time
-                repeater!!.scheduleAtFixedRate(object : TimerTask() {
-                    override fun run() {
-                        elapsedTime = System.currentTimeMillis() - startTime
-                        notifyListeners(Event.TIMER_UPDATE, elapsedTime)
-                    }
-                }, 0, 1)
-                notifyListeners(Event.TIMER_STARTED)
-            }
+            startTimer(time)
         } else {
-            if (repeater != null) {
-                repeater!!.cancel()
-                repeater = null
-                notifyListeners(Event.TIMER_STOPPED, time - startTime)
+            stopTimer(time)
+        }
+    }
+
+    private fun startInspection() {
+        inspecting = true
+        notifyListeners(Event.TIMER_UPDATE, 9999L)
+    }
+
+    private fun startTimer(time: Long) {
+        fun start() {
+            repeater = Timer()
+            startTime = time
+            repeater!!.scheduleAtFixedRate(object : TimerTask() {
+                override fun run() {
+                    elapsedTime = System.currentTimeMillis() - startTime
+                    notifyListeners(Event.TIMER_UPDATE, elapsedTime)
+                }
+            }, 0, 1)
+            notifyListeners(Event.TIMER_STARTED)
+            inspecting = false
+        }
+
+        //TODO: receive key code to increment field on any key up
+        numUps++
+        if (repeater == null && (numUps % 2 != 0)) {
+            if (useInspection) {
+                if (!inspecting) {
+                    numUps++
+                    startInspection()
+                } else {
+                    start()
+                }
+            } else {
+                start()
             }
+        }
+    }
+
+    private fun stopTimer(time: Long) {
+        if (repeater != null) {
+            repeater!!.cancel()
+            repeater = null
+            notifyListeners(Event.TIMER_STOPPED, time - startTime)
+            numUps = -1
         }
     }
 }
