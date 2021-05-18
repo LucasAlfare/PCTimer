@@ -5,7 +5,6 @@ import com.fltimer.EventListener
 import com.fltimer.Listenable
 import com.fltimer.gui.model.GuiAdapter
 import com.fltimer.statistics.StatisticResult
-import com.fltimer.timestamp
 import javax.swing.JLabel
 
 @Suppress("MemberVisibilityCanBePrivate")
