@@ -38,11 +38,22 @@ class TimerManager : Listenable(), EventListener {
             Event.TIMER_TOGGLE_DOWN -> handleTimerToggle(false, data as Long)
             Event.TIMER_TOGGLE_UP -> handleTimerToggle(true, data as Long)
             Event.TIMER_SET_WCA_INSPECTION -> handleTimerSetWcaInspection(data as Boolean)
-            Event.TIMER_CANCEL -> { /*TODO*/
-            }
+            Event.TIMER_CANCEL -> handleTimerCancel()
             else -> {
             }
         }
+    }
+
+    private fun handleTimerCancel() {
+        if (repeater != null) repeater!!.cancel()
+        if (inspectionRepeater != null) inspectionRepeater!!.cancel()
+        inspecting = false
+        numUps = 0
+        startTime = 0L
+        elapsedTime = 0L
+        inspectionRepeater = null
+        repeater = null
+        notifyListeners(Event.TIMER_UPDATE, "ready")
     }
 
     fun handleTimerSetWcaInspection(useInspection: Boolean) {

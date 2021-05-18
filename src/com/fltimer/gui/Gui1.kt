@@ -65,14 +65,14 @@ class Gui1Adapter : GuiAdapter() {
         initGui()
     }
 
-    override fun setupInteractionListener(down: () -> Unit, up: () -> Unit) {
+    override fun setupInteractionListener(onDown: () -> Unit, onUp: () -> Unit) {
         (root!! as Container).addKeyListener(object : KeyAdapter() {
             override fun keyPressed(e: KeyEvent?) {
                 if (e?.keyCode == KeyEvent.VK_SPACE) {
                     /**
                      * any application logic is written here, but in the GuiManager class.
                      */
-                    down()
+                    onDown()
                 }
             }
 
@@ -81,7 +81,17 @@ class Gui1Adapter : GuiAdapter() {
                     /**
                      * any application logic is written here, but in the GuiManager class.
                      */
-                    up()
+                    onUp()
+                }
+            }
+        })
+    }
+
+    override fun setupCancelInteraction(onCancel: () -> Unit) {
+        (root!! as Container).addKeyListener(object : KeyAdapter() {
+            override fun keyReleased(e: KeyEvent?) {
+                if (e?.keyCode == KeyEvent.VK_ESCAPE) {
+                    onCancel()
                 }
             }
         })

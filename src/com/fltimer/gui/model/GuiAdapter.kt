@@ -45,7 +45,9 @@ abstract class GuiAdapter {
      * Both callbacks are automatic called inside the direct implementation of this
      * class.
      */
-    abstract fun setupInteractionListener(down: () -> Unit, up: () -> Unit)
+    abstract fun setupInteractionListener(onDown: () -> Unit, onUp: () -> Unit)
+
+    abstract fun setupCancelInteraction(onCancel: () -> Unit)
 
     /**
      * Below some helper methods used to individually initializes fields related to the

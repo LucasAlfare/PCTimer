@@ -41,6 +41,10 @@ class GuiManager : Listenable(), EventListener {
             { notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis()) },
             { notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis()) })
 
+        guiAdapter.setupCancelInteraction {
+            notifyListeners(Event.TIMER_CANCEL)
+        }
+
         guiAdapter.start()
     }
 
