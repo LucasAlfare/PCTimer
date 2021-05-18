@@ -1,7 +1,7 @@
 package com.fltimer.gui
 
-import com.fltimer.gui.layout.JRelativeLayout
-import com.fltimer.gui.layout.JRelativeLayout.relativeConstraints
+import com.fltimer.gui.swing.layout.JRelativeLayout
+import com.fltimer.gui.swing.layout.JRelativeLayout.relativeConstraints
 import com.fltimer.gui.model.GuiAdapter
 import com.fltimer.timestamp
 import java.awt.Container
