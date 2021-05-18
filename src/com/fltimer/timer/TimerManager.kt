@@ -31,6 +31,7 @@ class TimerManager : Listenable(), EventListener {
     private var startTime = 0L
     private var elapsedTime = 0L
     private var repeater: Timer? = null
+    private var inspectionRepeater: Timer? = null
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
@@ -57,8 +58,25 @@ class TimerManager : Listenable(), EventListener {
     }
 
     private fun startInspection() {
+        inspectionRepeater = Timer()
+        inspectionRepeater!!.scheduleAtFixedRate(object : TimerTask() {
+            var seconds = 16
+            override fun run() {
+                seconds -= if (seconds >= 1) 1 else 0
+                when (seconds) {
+                    in 1..3 -> {
+                        notifyListeners(Event.TIMER_UPDATE, "+$seconds")
+                    }
+                    0 -> {
+                        notifyListeners(Event.TIMER_UPDATE, "DNF")
+                    }
+                    else -> {
+                        notifyListeners(Event.TIMER_UPDATE, seconds.toString())
+                    }
+                }
+            }
+        }, 0L, 1000L)
         inspecting = true
-        notifyListeners(Event.TIMER_UPDATE, "inspecting...")
     }
 
     private fun startTimer(time: Long) {
@@ -83,6 +101,8 @@ class TimerManager : Listenable(), EventListener {
                     numUps++
                     startInspection()
                 } else {
+                    inspectionRepeater!!.cancel()
+                    inspectionRepeater = null
                     start()
                 }
             } else {
