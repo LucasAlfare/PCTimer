@@ -3,59 +3,23 @@ package com.fltimer.gui
 import com.fltimer.Event
 import com.fltimer.EventListener
 import com.fltimer.Listenable
-import com.fltimer.statistics.StatisticId
+import com.fltimer.gui.model.GuiAdapter
 import com.fltimer.statistics.StatisticResult
 import com.fltimer.timestamp
-import java.awt.FlowLayout
-import java.awt.Font
-import java.awt.event.KeyAdapter
-import java.awt.event.KeyEvent
-import javax.swing.JComponent
-import javax.swing.JFrame
 import javax.swing.JLabel
-
-//compatibility only with Java/Swing. Android coming soon
-interface GuiModel {
-
-    fun getScramble(): JComponent
-    fun getDisplay(): JComponent
-}
-
-class TestGui : JFrame(), GuiModel {
-
-    var scramble: JLabel? = null
-    var display: JLabel? = null
-
-    init {
-        setSize(600, 400)
-        defaultCloseOperation = 3
-        setLocationRelativeTo(null)
-        layout = FlowLayout()
-
-        display = JLabel(0L.timestamp())
-        display!!.font = Font(display!!.font.name, Font.BOLD, 45)
-
-        scramble = JLabel()
-
-        add(scramble)
-        add(display)
-    }
-
-    override fun getScramble(): JComponent {
-        return scramble!!
-    }
-
-    override fun getDisplay(): JComponent {
-        return display!!
-    }
-}
 
 @Suppress("MemberVisibilityCanBePrivate")
 class GuiManager : Listenable(), EventListener {
 
-    //private val gui = TestGui()
-    private val gui = Gui()
-    private val details = Details()
+    /**
+     * The main GuiAdapter instance of the GuiManager.
+     * The field is typed to the abstract type GuiAdapter in order to leave the user
+     * switch its time over the time.
+     *
+     * TODO: restrict this switching only for development level?
+     */
+    private lateinit var guiAdapter: GuiAdapter
+
     private var solvesRef: ArrayList<*>? = null
 
     private var tmpTime = 0L
@@ -63,40 +27,23 @@ class GuiManager : Listenable(), EventListener {
     private var tmpPenalty = ""
 
     init {
-        setupDetails()
         setupGui()
     }
 
-    private fun setupDetails() {
-        details.sessionMean.addActionListener {
-            notifyListeners(Event.STATISTIC_GET_RESULT_OF, arrayOf(StatisticId.MEAN, solvesRef))
-        }
-    }
-
     private fun setupGui() {
-        gui.contentPane.addKeyListener(object : KeyAdapter() {
-            override fun keyPressed(e: KeyEvent?) {
-//                if (e!!.keyCode == KeyEvent.VK_SPACE) {
-//                    notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis())
-//                }
+        /**
+         * For this first implementations, the main gui adapter is set to a instance of
+         * a adapter made for a test.
+         */
+        guiAdapter = Gui1Adapter()
 
-                notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis())
-            }
+        guiAdapter.setupInteractionListener(
+            { notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis()) },
+            { notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis()) })
 
-            override fun keyReleased(e: KeyEvent?) {
-                if (e!!.keyCode == KeyEvent.VK_SPACE) {
-                    notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis())
-                }
-            }
-        })
-
-        gui.details.addActionListener {
-
-            details.start()
-        }
-
-        gui.start()
+        guiAdapter.start()
     }
+
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
@@ -117,7 +64,7 @@ class GuiManager : Listenable(), EventListener {
     }
 
     fun handleTimerUpdate(time: Long) {
-        (gui.display as JLabel).text = time.timestamp()
+        (guiAdapter.display as JLabel).text = time.timestamp()
     }
 
     fun handleTimerStopped(time: Long) {
@@ -133,18 +80,15 @@ class GuiManager : Listenable(), EventListener {
     }
 
     fun handleDataResponse(solves: ArrayList<*>) {
-        println("[DATA_RESPONSE] $solves")
         solvesRef = solves
     }
 
     fun handleDataChanged(solves: ArrayList<*>) {
-        println("[DATA_CHANGED] $solves")
         solvesRef = solves
     }
 
     fun handleScrambleChanged(scramble: String) {
         tmpScramble = scramble
-        (gui.scramble as JLabel).text = tmpScramble
-        println("[SCRAMBLE_CHANGED] $tmpScramble")
+        (guiAdapter.scramble as JLabel).text = tmpScramble
     }
 }
