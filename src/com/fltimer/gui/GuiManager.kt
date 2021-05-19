@@ -3,6 +3,7 @@ package com.fltimer.gui
 import com.fltimer.Event
 import com.fltimer.EventListener
 import com.fltimer.Listenable
+import com.fltimer.data.Penalty
 import com.fltimer.gui.model.GuiAdapter
 import com.fltimer.statistics.StatisticResult
 import javax.swing.JLabel
@@ -23,7 +24,7 @@ class GuiManager : Listenable(), EventListener {
 
     private var tmpTime = 0L
     private var tmpScramble = ""
-    private var tmpPenalty = ""
+    private var tmpPenalty = Penalty.OK
 
     init {
         setupGui()
@@ -31,14 +32,14 @@ class GuiManager : Listenable(), EventListener {
 
     private fun setupGui() {
         /**
-         * For this first implementations, the main gui adapter is set to a instance of
-         * a adapter made for a test.
+         * For this first implementations experiments, the main gui adapter is set
+         * to a instance of a adapter made for a test.
          */
         guiAdapter = Gui1Adapter()
 
         guiAdapter.setupInteractionListener(
-            { notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis()) },
-            { notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis()) })
+            onDown = { notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis()) },
+            onUp = { notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis()) })
 
         guiAdapter.setupCancelInteraction {
             notifyListeners(Event.TIMER_CANCEL)
@@ -50,24 +51,28 @@ class GuiManager : Listenable(), EventListener {
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
-            Event.TIMER_UPDATE -> handleTimerUpdate(data as String)
+            Event.TIMER_UPDATE -> handleDisplayUpdate(data as String)
             Event.TIMER_STOPPED -> handleTimerStopped(data as Long)
-            Event.DATA_RESPONSE -> handleDataResponse(data as ArrayList<*>)
-            Event.DATA_CHANGED -> handleDataChanged(data as ArrayList<*>)
+            Event.DATA_RESPONSE -> solvesRef = data as ArrayList<*>
+            Event.DATA_CHANGED -> {
+                solvesRef = data as ArrayList<*>
+                println(solvesRef)
+            }
             Event.SCRAMBLE_CHANGED -> handleScrambleChanged(data as String)
             Event.STATISTIC_RESPONSE_RESULT_OF -> handleStatisticResponseResultOf(data as StatisticResult)
+            Event.DATA_PENALTY_UPDATE -> tmpPenalty = data as Penalty
 
             else -> {
             }
         }
     }
 
-    private fun handleStatisticResponseResultOf(statisticResult: StatisticResult) {
-        println(statisticResult)
+    private fun handleDisplayUpdate(value: String) {
+        (guiAdapter.display as JLabel).text = value
     }
 
-    fun handleTimerUpdate(value: String) {
-        (guiAdapter.display as JLabel).text = value
+    private fun handleStatisticResponseResultOf(statisticResult: StatisticResult) {
+        println(statisticResult)
     }
 
     fun handleTimerStopped(time: Long) {
@@ -80,14 +85,6 @@ class GuiManager : Listenable(), EventListener {
             )
         )
         notifyListeners(Event.SCRAMBLE_REQUEST_NEW)
-    }
-
-    fun handleDataResponse(solves: ArrayList<*>) {
-        solvesRef = solves
-    }
-
-    fun handleDataChanged(solves: ArrayList<*>) {
-        solvesRef = solves
     }
 
     fun handleScrambleChanged(scramble: String) {

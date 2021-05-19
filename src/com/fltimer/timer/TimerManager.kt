@@ -3,6 +3,7 @@ package com.fltimer.timer
 import com.fltimer.Event
 import com.fltimer.EventListener
 import com.fltimer.Listenable
+import com.fltimer.data.Penalty
 import com.fltimer.timestamp
 import java.util.*
 
@@ -32,6 +33,7 @@ class TimerManager : Listenable(), EventListener {
     private var elapsedTime = 0L
     private var repeater: Timer? = null
     private var inspectionRepeater: Timer? = null
+    private var tmpPenalty = Penalty.OK
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
@@ -56,11 +58,11 @@ class TimerManager : Listenable(), EventListener {
         notifyListeners(Event.TIMER_UPDATE, "ready")
     }
 
-    fun handleTimerSetWcaInspection(useInspection: Boolean) {
+    private fun handleTimerSetWcaInspection(useInspection: Boolean) {
         this.useInspection = useInspection
     }
 
-    fun handleTimerToggle(up: Boolean, time: Long) {
+    private fun handleTimerToggle(up: Boolean, time: Long) {
         if (up) { // releases the toggle "key" (any trigger)
             startTimer(time)
         } else {
@@ -76,15 +78,21 @@ class TimerManager : Listenable(), EventListener {
                 seconds -= if (seconds >= 1) 1 else 0
                 when (seconds) {
                     in 1..3 -> {
+                        tmpPenalty = Penalty.PLUS_TWO
                         notifyListeners(Event.TIMER_UPDATE, "+$seconds")
                     }
                     0 -> {
+                        tmpPenalty = Penalty.DNF
+                        handleTimerCancel()
                         notifyListeners(Event.TIMER_UPDATE, "DNF")
+                        notifyListeners(Event.TIMER_STOPPED, -1L)
                     }
                     else -> {
+                        tmpPenalty = Penalty.OK
                         notifyListeners(Event.TIMER_UPDATE, seconds.toString())
                     }
                 }
+                notifyListeners(Event.DATA_PENALTY_UPDATE, tmpPenalty)
             }
         }, 0L, 1000L)
         inspecting = true
@@ -97,7 +105,9 @@ class TimerManager : Listenable(), EventListener {
             repeater!!.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     elapsedTime = System.currentTimeMillis() - startTime
-                    notifyListeners(Event.TIMER_UPDATE, elapsedTime.timestamp())
+                    val text =
+                        "${if (tmpPenalty == Penalty.PLUS_TWO) "+" else ""}${(elapsedTime + (if (tmpPenalty == Penalty.PLUS_TWO) 2000 else 0)).timestamp()}"
+                    notifyListeners(Event.TIMER_UPDATE, text)
                 }
             }, 0, 1)
             notifyListeners(Event.TIMER_STARTED)

@@ -6,13 +6,19 @@ import com.fltimer.Event
 import com.fltimer.EventListener
 import com.fltimer.Listenable
 import java.util.*
-import kotlin.collections.ArrayList
+
+
+enum class Penalty {
+    OK,
+    PLUS_TWO,
+    DNF
+}
 
 data class Solve(
     val id: UUID = UUID.randomUUID(),
     var time: Long,
-    var scramble: String = "[no scramble yet]",
-    var penalty: String = "ok"
+    var scramble: String = "[no scramble set]",
+    var penalty: Penalty = Penalty.OK
 )
 
 /**
@@ -40,7 +46,7 @@ class DataManager : Listenable(), EventListener {
                 val params = data as Array<*>
                 val time = params[0] as Long
                 val scramble = params[1] as String
-                val penalty = params[2] as String
+                val penalty = params[2] as Penalty
                 handleDataItemCreate(
                     time = time,
                     scramble = scramble,
@@ -55,7 +61,7 @@ class DataManager : Listenable(), EventListener {
                     id = params[0] as UUID,
                     time = params[1] as Long,
                     scramble = params[2] as String,
-                    penalty = params[3] as String
+                    penalty = params[3] as Penalty
                 )
             }
 
@@ -71,14 +77,14 @@ class DataManager : Listenable(), EventListener {
         notifyListeners(Event.DATA_CHANGED, solves)
     }
 
-    fun handleDataItemCreate(time: Long, scramble: String, penalty: String): Solve {
+    fun handleDataItemCreate(time: Long, scramble: String, penalty: Penalty): Solve {
         val ref = Solve(time = time, scramble = scramble, penalty = penalty)
         solves += ref
         notifyListeners(Event.DATA_CHANGED, solves)
         return ref
     }
 
-    fun handleDataItemUpdate(id: UUID, time: Long, scramble: String, penalty: String) {
+    fun handleDataItemUpdate(id: UUID, time: Long, scramble: String, penalty: Penalty) {
         val solveRef = solves.find { it.id == id }!!
         solveRef.time = time
         solveRef.scramble = scramble
