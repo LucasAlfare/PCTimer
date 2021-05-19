@@ -1,27 +1,16 @@
 package com.fltimer.statistics
 
-import com.fltimer.data.Solve
-import java.util.*
-import kotlin.collections.ArrayList
+class Mean : Statistic(StatisticId.MEAN) {
 
-class Mean : Statistic {
+    override fun getResult(): Long {
 
-    private val relatedIds = arrayListOf<UUID>()
-
-    override fun result(data: ArrayList<Solve>): Long {
-        relatedIds.clear()
         var sum = 0L
-        data.forEach {
-            sum += it.time
-            relatedIds += it.id
+
+        statisticData.objects.forEach {
+            sum += it.number
+            relatedElements.add(it.id)
         }
 
-        return sum / data.size
+        return sum / statisticData.objects.size
     }
-
-    override fun elements(): Any {
-        return relatedIds
-    }
-
-    override fun statisticResult(data: ArrayList<Solve>) = StatisticResult(StatisticId.MEAN, result(data), relatedIds)
 }

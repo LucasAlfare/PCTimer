@@ -1,5 +1,9 @@
 package com.fltimer
 
+import com.fltimer.data.Solve
+import com.fltimer.statistics.StatisticData
+import com.fltimer.statistics.StatisticDataObject
+
 /**
  * Converts a long to a timestamp in the format
  *
@@ -9,6 +13,8 @@ package com.fltimer
  * - mm: minutes padded to 2 digits;
  * - ss: seconds padded to 2 digits;
  * - SSS: milliseconds padded to 3 digits.
+ *
+ * TODO: prototype nanoseconds precision.
  */
 fun Long.timestamp(): String {
     val seconds = "${(this / 1000) % 60}".padStart(2, '0')
@@ -20,4 +26,14 @@ fun Long.timestamp(): String {
     }
 
     return "$seconds.$milliseconds"
+}
+
+fun Solve.toStatisticDataObject(): StatisticDataObject {
+    return StatisticDataObject(this.id, this.time)
+}
+
+fun ArrayList<Solve>.toStatisticData(): StatisticData {
+    val objects = arrayListOf<StatisticDataObject>()
+    forEach { objects += it.toStatisticDataObject() }
+    return StatisticData(objects)
 }

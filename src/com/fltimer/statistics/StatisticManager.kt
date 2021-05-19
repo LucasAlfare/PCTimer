@@ -4,19 +4,35 @@ import com.fltimer.Event
 import com.fltimer.EventListener
 import com.fltimer.Listenable
 import com.fltimer.data.Solve
+import com.fltimer.toStatisticData
+import java.util.*
 
 enum class StatisticId {
-    MEAN
+    MEAN,
+    OVERALL_AVERAGE,
+    BEST_SINGLE,
+    WORST_SINGLE,
+    BEST_WINDOWED_AVERAGE,
+    WORST_WINDOWED_AVERAGE,
+    WINDOWED_AVERAGE
 }
 
-interface Statistic {
-
-    fun result(data: ArrayList<Solve>): Long
-    fun elements(): Any
-    fun statisticResult(data: ArrayList<Solve>): StatisticResult
-}
-
+data class StatisticDataObject(val id: UUID, val number: Long)
+data class StatisticData(val objects: ArrayList<StatisticDataObject>)
 data class StatisticResult(val statisticId: StatisticId, val result: Long, val relatedElements: Any)
+
+abstract class Statistic(var id: StatisticId) {
+
+    lateinit var statisticData: StatisticData
+    var relatedElements: ArrayList<UUID> = arrayListOf()
+
+    abstract fun getResult(): Long
+
+    fun statisticResult(statisticData: StatisticData): StatisticResult {
+        this.statisticData = statisticData
+        return StatisticResult(id, getResult(), relatedElements)
+    }
+}
 
 /**
  * In Events:
@@ -54,12 +70,14 @@ class StatisticManager : Listenable(), EventListener {
 
     private fun handleStatisticGetAllResults(solves: ArrayList<Solve>) {
         val results = arrayListOf<StatisticResult>()
-        statisticsMap.values.forEach { statistic -> results.add(statistic.statisticResult(solves)) }
+        statisticsMap.values.forEach { statistic ->
+            results.add(statistic.statisticResult(solves.toStatisticData()))
+        }
         notifyListeners(Event.STATISTIC_RESPONSE_ALL_RESULT, results)
     }
 
     private fun handleStatisticGetResultOf(statisticId: StatisticId, solves: ArrayList<Solve>) {
-        val result = statisticsMap[statisticId]!!.statisticResult(solves)
+        val result = statisticsMap[statisticId]!!.statisticResult(solves.toStatisticData())
         notifyListeners(Event.STATISTIC_RESPONSE_RESULT_OF, result)
     }
 }
