@@ -3,7 +3,7 @@ package com.fltimer.gui.model
 /**
  * Base class for injecting multi front-ends in this application.
  *
- * All front-end operations supported for the project must be defined here in order
+ * All front-end operations supported for the project are defined here in order
  * to tell its extensions to create its implementations.
  *
  * The mains architecture for distinct Gui should follow the path:
