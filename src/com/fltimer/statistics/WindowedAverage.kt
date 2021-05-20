@@ -7,7 +7,8 @@ class WindowedAverage(val windowSize: Int) : Statistic(StatisticId.WINDOWED_AVER
 
     override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
         relatedElements.clear()
-        if (statisticData.size < windowSize) return StatisticResult(id, 0L, relatedElements)
+        if (statisticData.size < windowSize)
+            return StatisticResult(id, 0L, relatedElements)
 
         val target = LinkedHashMap<UUID, StatisticDataObject>()
         val keys = statisticData.keys.toTypedArray()
