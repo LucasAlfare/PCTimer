@@ -35,7 +35,6 @@ data class Solve(
  */
 class DataManager : Listenable(), EventListener {
 
-    //private val solves = arrayListOf<Solve>()
     private val solves = HashMap<UUID, Solve>()
 
     override fun onEvent(event: Event, data: Any?) {
@@ -81,14 +80,12 @@ class DataManager : Listenable(), EventListener {
 
     fun handleDataItemCreate(time: Long, scramble: String, penalty: Penalty): Solve {
         val solveRef = Solve(time = time, scramble = scramble, penalty = penalty)
-        //solves += ref
         solves[solveRef.id] = solveRef
         notifyListeners(Event.DATA_CHANGED, solves)
         return solveRef
     }
 
     fun handleDataItemUpdate(id: UUID, time: Long, scramble: String, penalty: Penalty) {
-        //val solveRef = solves.find { it.id == id }!!
         val solveRef = solves[id]!!
         solveRef.time = time
         solveRef.scramble = scramble
@@ -97,8 +94,6 @@ class DataManager : Listenable(), EventListener {
     }
 
     fun handleDataItemRemove(id: UUID) {
-        //val solveRef = solves.find { it.id == id }!!
-        //solves -= solveRef
         solves.remove(id)
         notifyListeners(Event.DATA_CHANGED, solves)
     }
