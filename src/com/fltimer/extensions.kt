@@ -1,8 +1,9 @@
 package com.fltimer
 
 import com.fltimer.data.Solve
-import com.fltimer.statistics.StatisticData
+import com.fltimer.data.Solves
 import com.fltimer.statistics.StatisticDataObject
+import java.util.*
 
 /**
  * Converts a long to a timestamp in the format
@@ -32,8 +33,11 @@ fun Solve.toStatisticDataObject(): StatisticDataObject {
     return StatisticDataObject(this.id, this.time)
 }
 
-fun ArrayList<Solve>.toStatisticData(): StatisticData {
-    val objects = arrayListOf<StatisticDataObject>()
-    forEach { objects += it.toStatisticDataObject() }
-    return StatisticData(objects)
+fun Solves.toStatisticData(): LinkedHashMap<UUID, StatisticDataObject> {
+    val map = LinkedHashMap<UUID, StatisticDataObject>()
+    keys.forEach { id ->
+        val solve = get(id) as Solve
+        map[id] = solve.toStatisticDataObject()
+    }
+    return map
 }

@@ -35,14 +35,13 @@ data class Solve(
  */
 class DataManager : Listenable(), EventListener {
 
-    private val solves = HashMap<UUID, Solve>()
+    private val solves = Solves()
 
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
             Event.DATA_CLEAR -> handleDataClear()
 
             Event.DATA_ITEM_CREATE -> {
-                println("DATA_ITEM_CREATE received")
                 val params = data as Array<*>
                 val time = params[0] as Long
                 val scramble = params[1] as String
@@ -98,7 +97,7 @@ class DataManager : Listenable(), EventListener {
         notifyListeners(Event.DATA_CHANGED, solves)
     }
 
-    fun handleDataGet(): HashMap<UUID, Solve> {
+    fun handleDataGet(): LinkedHashMap<UUID, Solve> {
         notifyListeners(Event.DATA_CHANGED, solves)
         return solves
     }

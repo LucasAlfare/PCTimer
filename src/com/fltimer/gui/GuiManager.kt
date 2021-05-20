@@ -4,10 +4,9 @@ import com.fltimer.Event
 import com.fltimer.EventListener
 import com.fltimer.Listenable
 import com.fltimer.data.Penalty
-import com.fltimer.data.Solve
+import com.fltimer.data.Solves
 import com.fltimer.gui.model.GuiAdapter
 import com.fltimer.statistics.StatisticResult
-import java.util.*
 import javax.swing.JLabel
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -22,7 +21,7 @@ class GuiManager : Listenable(), EventListener {
      */
     private lateinit var guiAdapter: GuiAdapter
 
-    private var solvesRef: HashMap<UUID, Solve>? = null
+    private var solvesRef: Solves? = null
 
     private var tmpTime = 0L
     private var tmpScramble = ""
@@ -54,9 +53,9 @@ class GuiManager : Listenable(), EventListener {
         when (event) {
             Event.TIMER_UPDATE -> handleDisplayUpdate(data as String)
             Event.TIMER_STOPPED -> handleTimerStopped(data as Long)
-            Event.DATA_RESPONSE -> solvesRef = data as HashMap<UUID, Solve>
+            Event.DATA_RESPONSE -> solvesRef = data as Solves
             Event.DATA_CHANGED -> {
-                solvesRef = data as HashMap<UUID, Solve>
+                solvesRef = data as Solves
                 println(solvesRef)
             }
             Event.SCRAMBLE_CHANGED -> handleScrambleChanged(data as String)

@@ -3,7 +3,7 @@ package com.fltimer.statistics
 import com.fltimer.Event
 import com.fltimer.EventListener
 import com.fltimer.Listenable
-import com.fltimer.data.Solve
+import com.fltimer.data.Solves
 import com.fltimer.toStatisticData
 import java.util.*
 
@@ -18,17 +18,16 @@ enum class StatisticId {
 }
 
 data class StatisticDataObject(val id: UUID, val number: Long)
-data class StatisticData(val objects: ArrayList<StatisticDataObject>)
 data class StatisticResult(val statisticId: StatisticId, val result: Long, val relatedElements: Any)
 
 abstract class Statistic(var id: StatisticId) {
 
-    lateinit var statisticData: StatisticData
+    lateinit var statisticData: HashMap<UUID, StatisticDataObject>
     var relatedElements: ArrayList<UUID> = arrayListOf()
 
     abstract fun getResult(): Long
 
-    fun statisticResult(statisticData: StatisticData): StatisticResult {
+    fun statisticResult(statisticData: HashMap<UUID, StatisticDataObject>): StatisticResult {
         this.statisticData = statisticData
         return StatisticResult(id, getResult(), relatedElements)
     }
@@ -45,8 +44,8 @@ abstract class Statistic(var id: StatisticId) {
  */
 class StatisticManager : Listenable(), EventListener {
 
-    private var solvesRef: ArrayList<Solve>? = null
-    private val statisticsMap = HashMap<StatisticId, Statistic>()
+    private var solvesRef: Solves? = null
+    private val statisticsMap = LinkedHashMap<StatisticId, Statistic>()
 
     init {
         statisticsMap[StatisticId.MEAN] = Mean()
@@ -56,19 +55,19 @@ class StatisticManager : Listenable(), EventListener {
     override fun onEvent(event: Event, data: Any?) {
         when (event) {
             Event.STATISTIC_GET_ALL_RESULTS -> {
-                handleStatisticGetAllResults(data as ArrayList<Solve>)
+                handleStatisticGetAllResults(data as Solves)
             }
 
             Event.STATISTIC_GET_RESULT_OF -> {
                 val params = data as Array<*>
-                handleStatisticGetResultOf(params[0] as StatisticId, params[1] as ArrayList<Solve>)
+                handleStatisticGetResultOf(params[0] as StatisticId, params[1] as Solves)
             }
             else -> {
             }
         }
     }
 
-    private fun handleStatisticGetAllResults(solves: ArrayList<Solve>) {
+    private fun handleStatisticGetAllResults(solves: Solves) {
         val results = arrayListOf<StatisticResult>()
         statisticsMap.values.forEach { statistic ->
             results.add(statistic.statisticResult(solves.toStatisticData()))
@@ -76,7 +75,7 @@ class StatisticManager : Listenable(), EventListener {
         notifyListeners(Event.STATISTIC_RESPONSE_ALL_RESULT, results)
     }
 
-    private fun handleStatisticGetResultOf(statisticId: StatisticId, solves: ArrayList<Solve>) {
+    private fun handleStatisticGetResultOf(statisticId: StatisticId, solves: Solves) {
         val result = statisticsMap[statisticId]!!.statisticResult(solves.toStatisticData())
         notifyListeners(Event.STATISTIC_RESPONSE_RESULT_OF, result)
     }
