@@ -43,6 +43,7 @@ class StatisticManager : Listenable(), EventListener {
         statisticsMap[StatisticId.MEAN] = Mean()
         statisticsMap[StatisticId.BEST_SINGLE] = BestSingle()
         statisticsMap[StatisticId.OVERALL_AVERAGE] = OverallAverage()
+        statisticsMap[StatisticId.WORST_SINGLE] = WorstSingle()
         //TODO other stats
     }
 
