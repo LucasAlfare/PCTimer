@@ -18,8 +18,8 @@ enum class StatisticId {
 }
 
 data class StatisticDataObject(val id: UUID, val number: Long)
-data class StatisticResult(val statisticId: StatisticId, var result: Long, var relatedElements: ArrayList<UUID>)
-abstract class Statistic(var id: StatisticId) {
+data class StatisticResult(var statisticId: StatisticId, var result: Long, var relatedElements: ArrayList<UUID>)
+abstract class Statistic(val id: StatisticId) {
 
     var relatedElements: ArrayList<UUID> = arrayListOf()
 

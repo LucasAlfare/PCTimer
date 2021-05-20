@@ -6,6 +6,9 @@ import java.util.*
 class WindowedAverage(val windowSize: Int) : Statistic(StatisticId.WINDOWED_AVERAGE) {
 
     override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
+        relatedElements.clear()
+        if (statisticData.size < windowSize) return StatisticResult(id, 0L, relatedElements)
+
         val target = LinkedHashMap<UUID, StatisticDataObject>()
         val keys = statisticData.keys.toTypedArray()
 
@@ -15,6 +18,8 @@ class WindowedAverage(val windowSize: Int) : Statistic(StatisticId.WINDOWED_AVER
             i--
         }
 
-        return Average().getStatisticResult(target)
+        val stat = Average().getStatisticResult(target)
+        stat.statisticId = id
+        return stat
     }
 }
