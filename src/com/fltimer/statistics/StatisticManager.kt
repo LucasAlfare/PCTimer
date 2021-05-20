@@ -9,12 +9,12 @@ import java.util.*
 
 enum class StatisticId {
     MEAN,
-    OVERALL_AVERAGE,
     BEST_SINGLE,
     WORST_SINGLE,
+    OVERALL_AVERAGE,
+    WINDOWED_AVERAGE,
     BEST_WINDOWED_AVERAGE,
-    WORST_WINDOWED_AVERAGE,
-    WINDOWED_AVERAGE
+    WORST_WINDOWED_AVERAGE
 }
 
 data class StatisticDataObject(val id: UUID, val number: Long)

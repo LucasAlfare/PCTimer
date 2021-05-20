@@ -10,18 +10,18 @@ class OverallAverage : Statistic(StatisticId.OVERALL_AVERAGE) {
 
         if (statisticData.size < 3) return ret
 
-        var high = Long.MIN_VALUE
-        var low = Long.MAX_VALUE
+        var highest = Long.MIN_VALUE
+        var lowest = Long.MAX_VALUE
         var best: StatisticDataObject? = null
         var worst: StatisticDataObject? = null
 
         statisticData.keys.forEach {
             val data = statisticData[it]!!
-            if (low > data.number) {
-                low = data.number
+            if (lowest > data.number) {
+                lowest = data.number
                 best = data
-            } else if (high < data.number) {
-                high = data.number
+            } else if (highest < data.number) {
+                highest = data.number
                 worst = data
             }
         }

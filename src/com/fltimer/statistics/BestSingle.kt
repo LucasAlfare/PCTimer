@@ -2,7 +2,7 @@ package com.fltimer.statistics
 
 import java.util.*
 
-class Mean : Statistic(StatisticId.MEAN) {
+class BestSingle : Statistic(StatisticId.OVERALL_AVERAGE) {
 
     override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
         relatedElements.clear()
@@ -10,15 +10,18 @@ class Mean : Statistic(StatisticId.MEAN) {
         val ret = StatisticResult(id, 0L, relatedElements)
         if (statisticData.size < 1) return ret
 
-        var sum = 0L
-
+        var lowest = Long.MAX_VALUE
+        var best: StatisticDataObject? = null
         statisticData.keys.forEach {
             val data = statisticData[it]!!
-            sum += data.number
-            relatedElements += it
+            if (data.number < lowest) {
+                lowest = data.number
+                best = data
+            }
         }
 
-        val result = sum / statisticData.size
+        val result = best!!.number
+        relatedElements += best!!.id
         ret.relatedElements = result
         ret.relatedElements = relatedElements
         return ret
