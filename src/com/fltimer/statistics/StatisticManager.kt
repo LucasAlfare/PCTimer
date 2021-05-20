@@ -19,7 +19,6 @@ enum class StatisticId {
 
 data class StatisticDataObject(val id: UUID, val number: Long)
 data class StatisticResult(val statisticId: StatisticId, var result: Long, var relatedElements: Any)
-
 abstract class Statistic(var id: StatisticId) {
 
     var relatedElements: ArrayList<UUID> = arrayListOf()
@@ -42,6 +41,7 @@ class StatisticManager : Listenable(), EventListener {
 
     init {
         statisticsMap[StatisticId.MEAN] = Mean()
+        statisticsMap[StatisticId.BEST_SINGLE] = BestSingle()
         statisticsMap[StatisticId.OVERALL_AVERAGE] = OverallAverage()
         //TODO other stats
     }

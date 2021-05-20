@@ -2,7 +2,7 @@ package com.fltimer.statistics
 
 import java.util.*
 
-class BestSingle : Statistic(StatisticId.OVERALL_AVERAGE) {
+class BestSingle : Statistic(StatisticId.BEST_SINGLE) {
 
     override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
         relatedElements.clear()
@@ -22,8 +22,10 @@ class BestSingle : Statistic(StatisticId.OVERALL_AVERAGE) {
 
         val result = best!!.number
         relatedElements += best!!.id
-        ret.relatedElements = result
+
+        ret.result = result
         ret.relatedElements = relatedElements
+
         return ret
     }
 }
