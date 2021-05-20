@@ -2,7 +2,7 @@ package com.fltimer.statistics
 
 import java.util.*
 
-class OverallAverage : Statistic(StatisticId.OVERALL_AVERAGE) {
+class Average : Statistic(StatisticId.AVERAGE) {
 
     override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
         val best = BestSingle().getStatisticResult(statisticData)

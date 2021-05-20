@@ -11,7 +11,7 @@ enum class StatisticId {
     MEAN,
     BEST_SINGLE,
     WORST_SINGLE,
-    OVERALL_AVERAGE,
+    AVERAGE,
     WINDOWED_AVERAGE,
     BEST_WINDOWED_AVERAGE,
     WORST_WINDOWED_AVERAGE
@@ -40,10 +40,11 @@ class StatisticManager : Listenable(), EventListener {
     private val statisticsMap = LinkedHashMap<StatisticId, Statistic>()
 
     init {
+        //TODO: make assigns dynamic
         statisticsMap[StatisticId.MEAN] = Mean()
         statisticsMap[StatisticId.BEST_SINGLE] = BestSingle()
-        statisticsMap[StatisticId.OVERALL_AVERAGE] = OverallAverage()
         statisticsMap[StatisticId.WORST_SINGLE] = WorstSingle()
+        statisticsMap[StatisticId.AVERAGE] = Average()
         //TODO other stats
     }
 
