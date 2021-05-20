@@ -27,7 +27,7 @@ abstract class Statistic(var id: StatisticId) {
 
     abstract fun getResult(): Long
 
-    fun statisticResult(statisticData: HashMap<UUID, StatisticDataObject>): StatisticResult {
+    fun statisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
         this.statisticData = statisticData
         return StatisticResult(id, getResult(), relatedElements)
     }
