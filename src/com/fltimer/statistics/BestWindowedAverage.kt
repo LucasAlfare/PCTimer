@@ -14,14 +14,12 @@ class BestWindowedAverage(val windowSize: Int) : Statistic(StatisticId.BEST_WIND
             var j = 0
             while (j < windowSize) {
                 if (j + i < keys.size) {
-                    target[keys[i + j]] = statisticData[keys[i + j]] as StatisticDataObject
+                    val index = i + j++
+                    target[keys[index]] = statisticData[keys[index]] as StatisticDataObject
                 }
-                j++
             }
 
-            val avg = WindowedAverage(windowSize).getStatisticResult(target)
-            println(avg)
-            averages += avg
+            averages += WindowedAverage(windowSize).getStatisticResult(target)
 
             if (i + windowSize >= statisticData.size) {
                 break
