@@ -1,11 +1,14 @@
 package com.fltimer.statistics
 
+import java.util.*
+
 class OverallAverage : Statistic(StatisticId.OVERALL_AVERAGE) {
 
-    override fun getResult(): Long {
-        if (statisticData.size < 3) return 0L
-
+    override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
         relatedElements.clear()
+        val ret = StatisticResult(id, 0L, relatedElements)
+
+        if (statisticData.size < 3) return ret
 
         var high = Long.MIN_VALUE
         var low = Long.MAX_VALUE
@@ -32,6 +35,9 @@ class OverallAverage : Statistic(StatisticId.OVERALL_AVERAGE) {
             }
         }
 
-        return sum / (statisticData.size - 2)
+        val result = sum / (statisticData.size - 2)
+        ret.result = result
+        ret.relatedElements = relatedElements
+        return ret
     }
 }

@@ -18,19 +18,13 @@ enum class StatisticId {
 }
 
 data class StatisticDataObject(val id: UUID, val number: Long)
-data class StatisticResult(val statisticId: StatisticId, val result: Long, val relatedElements: Any)
+data class StatisticResult(val statisticId: StatisticId, var result: Long, var relatedElements: Any)
 
 abstract class Statistic(var id: StatisticId) {
 
-    lateinit var statisticData: HashMap<UUID, StatisticDataObject>
     var relatedElements: ArrayList<UUID> = arrayListOf()
 
-    abstract fun getResult(): Long
-
-    fun statisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
-        this.statisticData = statisticData
-        return StatisticResult(id, getResult(), relatedElements)
-    }
+    abstract fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult
 }
 
 /**
@@ -44,11 +38,11 @@ abstract class Statistic(var id: StatisticId) {
  */
 class StatisticManager : Listenable(), EventListener {
 
-    private var solvesRef: Solves? = null
     private val statisticsMap = LinkedHashMap<StatisticId, Statistic>()
 
     init {
         statisticsMap[StatisticId.MEAN] = Mean()
+        statisticsMap[StatisticId.OVERALL_AVERAGE] = OverallAverage()
         //TODO other stats
     }
 
@@ -70,13 +64,13 @@ class StatisticManager : Listenable(), EventListener {
     private fun handleStatisticGetAllResults(solves: Solves) {
         val results = arrayListOf<StatisticResult>()
         statisticsMap.values.forEach { statistic ->
-            results.add(statistic.statisticResult(solves.toStatisticData()))
+            results.add(statistic.getStatisticResult(solves.toStatisticData()))
         }
         notifyListeners(Event.STATISTIC_RESPONSE_ALL_RESULT, results)
     }
 
     private fun handleStatisticGetResultOf(statisticId: StatisticId, solves: Solves) {
-        val result = statisticsMap[statisticId]!!.statisticResult(solves.toStatisticData())
+        val result = statisticsMap[statisticId]!!.getStatisticResult(solves.toStatisticData())
         notifyListeners(Event.STATISTIC_RESPONSE_RESULT_OF, result)
     }
 }

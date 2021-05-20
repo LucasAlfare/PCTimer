@@ -1,8 +1,10 @@
 package com.fltimer.statistics
 
+import java.util.*
+
 class Mean : Statistic(StatisticId.MEAN) {
 
-    override fun getResult(): Long {
+    override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
         relatedElements.clear()
         var sum = 0L
 
@@ -12,6 +14,7 @@ class Mean : Statistic(StatisticId.MEAN) {
             relatedElements += it
         }
 
-        return sum / statisticData.size
+        val result = sum / statisticData.size
+        return StatisticResult(id, result, relatedElements)
     }
 }
