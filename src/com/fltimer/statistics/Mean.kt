@@ -19,7 +19,7 @@ class Mean : Statistic(StatisticId.MEAN) {
         }
 
         val result = sum / statisticData.size
-        ret.relatedElements = result
+        ret.result = result
         ret.relatedElements = relatedElements
         return ret
     }
