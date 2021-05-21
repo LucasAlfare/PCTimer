@@ -21,6 +21,7 @@ class WindowedAverage(val windowSize: Int) : Statistic(StatisticId.WINDOWED_AVER
 
         val stat = Average().getStatisticResult(target)
         stat.statisticId = id
+
         return stat
     }
 }

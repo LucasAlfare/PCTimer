@@ -11,10 +11,14 @@ class Average : Statistic(StatisticId.AVERAGE) {
             statisticData.filter {
                 it.key != best.relatedElements[0] && it.key != worst.relatedElements[0]
             }
-        val stat = Mean().getStatisticResult(
-            targetObjects as LinkedHashMap<UUID, StatisticDataObject>
-        )
+
+        relatedElements.clear()
+        statisticData.keys.forEach { relatedElements += it }
+
+        val stat = Mean().getStatisticResult(targetObjects as LinkedHashMap<UUID, StatisticDataObject>)
         stat.statisticId = id
+        stat.relatedElements = relatedElements
+
         return stat
     }
 }
