@@ -6,6 +6,9 @@ import java.util.*
 class BestWindowedAverage(val windowSize: Int) : Statistic(StatisticId.BEST_WINDOWED_AVERAGE) {
 
     override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
+        if (statisticData.size < windowSize)
+            return StatisticResult(StatisticId.BEST_WINDOWED_AVERAGE, 0L, relatedElements)
+
         val averages = arrayListOf<StatisticResult>()
         val keys = statisticData.keys.toTypedArray()
         var i = 0
