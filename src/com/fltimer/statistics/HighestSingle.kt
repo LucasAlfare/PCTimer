@@ -2,7 +2,10 @@ package com.fltimer.statistics
 
 import java.util.*
 
-class WorstSingle : Statistic(StatisticId.WORST_SINGLE) {
+/**
+ * Class that finds the maximum/highest value over the statistic data supplied.
+ */
+class HighestSingle : Statistic(StatisticId.HIGHEST_SINGLE) {
 
     override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
         relatedElements.clear()

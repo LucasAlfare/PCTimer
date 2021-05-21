@@ -22,8 +22,8 @@ class StatisticManager : Listenable(), EventListener {
     init {
         //TODO: make assigns dynamic
         statisticsMap[StatisticId.MEAN] = Mean()
-        statisticsMap[StatisticId.BEST_SINGLE] = BestSingle()
-        statisticsMap[StatisticId.WORST_SINGLE] = WorstSingle()
+        statisticsMap[StatisticId.LOWEST_SINGLE] = LowestSingle()
+        statisticsMap[StatisticId.HIGHEST_SINGLE] = HighestSingle()
         statisticsMap[StatisticId.AVERAGE] = Average()
         //TODO other stats
     }

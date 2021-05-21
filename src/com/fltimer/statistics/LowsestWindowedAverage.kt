@@ -2,12 +2,22 @@ package com.fltimer.statistics
 
 import java.util.*
 
-
-class BestWindowedAverage(val windowSize: Int) : Statistic(StatisticId.BEST_WINDOWED_AVERAGE) {
+/**
+ * This is a composite statistic that finds the minimum/lowest Windowed Average of
+ * N elements over the statistic data supplied.
+ *
+ * The algorithm will compute all windowed averages of N that can fit inside the data.
+ * For example, if windowSize field is set to 5 and the data contains 5 elements, then
+ * only 1 windowed average of 5 elements will be used to get the result.
+ *
+ * For the same scenario, if the data contains 6 elements, 2 windowed averages will be
+ * used to get the result. If is 10, the 5 will be used and so on.
+ */
+class LowsestWindowedAverage(val windowSize: Int) : Statistic(StatisticId.LOWEST_WINDOWED_AVERAGE) {
 
     override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
         if (statisticData.size < windowSize)
-            return StatisticResult(StatisticId.BEST_WINDOWED_AVERAGE, 0L, relatedElements)
+            return StatisticResult(StatisticId.LOWEST_WINDOWED_AVERAGE, 0L, relatedElements)
 
         val averages = arrayListOf<StatisticResult>()
         val keys = statisticData.keys.toTypedArray()
@@ -45,7 +55,7 @@ class BestWindowedAverage(val windowSize: Int) : Statistic(StatisticId.BEST_WIND
         }
 
         val stat = averages[indexOfMin]
-        stat.statisticId = StatisticId.BEST_WINDOWED_AVERAGE
+        stat.statisticId = StatisticId.LOWEST_WINDOWED_AVERAGE
         return stat
     }
 }

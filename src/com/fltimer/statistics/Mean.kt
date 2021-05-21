@@ -2,6 +2,9 @@ package com.fltimer.statistics
 
 import java.util.*
 
+/**
+ * Class that calculates the standard arithmetic mean of the statistic data supplied.
+ */
 class Mean : Statistic(StatisticId.MEAN) {
 
     override fun getStatisticResult(statisticData: LinkedHashMap<UUID, StatisticDataObject>): StatisticResult {
