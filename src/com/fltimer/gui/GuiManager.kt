@@ -5,6 +5,7 @@ import com.fltimer.EventListener
 import com.fltimer.Listenable
 import com.fltimer.data.Penalty
 import com.fltimer.data.Solves
+import com.fltimer.gui.gui1.Gui1Adapter
 import com.fltimer.gui.model.GuiAdapter
 import com.fltimer.statistics.StatisticResult
 import javax.swing.JLabel
