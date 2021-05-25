@@ -53,9 +53,9 @@ class Gui2 : JFrame() {
         scramble!!.isFocusable = false
         scramble!!.font = Font("Courier New", 0, 18) // NOI18N
         scramble!!.horizontalAlignment = SwingConstants.CENTER
-        display!!.text = "jLabel3"
+        display!!.text = 0L.timestamp()
         display!!.isFocusable = false
-        display!!.font = Font("Courier New", 1, 70) // NOI18N
+        display!!.font = Font("Impact", Font.PLAIN, 70) // NOI18N
         display!!.horizontalAlignment = SwingConstants.CENTER
         val layout = GroupLayout(contentPane)
         contentPane.layout = layout
@@ -205,14 +205,26 @@ class Gui2Adapter : GuiAdapter() {
         gui2.deleteSelected!!.addActionListener {
             val l = solvesList as JList<String>
             if (l.selectedIndex != -1) {
-                action(l.selectedIndex)
+                val dialogResult = JOptionPane.showConfirmDialog(
+                    gui2,
+                    "Delete the selected solve?"
+                )
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    action(l.selectedIndex)
+                }
             }
         }
     }
 
     override fun setClearAction(action: () -> Unit) {
         gui2.clear!!.addActionListener {
-            action()
+            val dialogResult = JOptionPane.showConfirmDialog(
+                gui2,
+                "Clear all solves?"
+            )
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                action()
+            }
         }
     }
 
