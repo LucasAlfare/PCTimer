@@ -134,9 +134,14 @@ class TimerManager : Listenable(), EventListener {
 
     private fun stopTimer(time: Long) {
         if (repeater != null) {
+            elapsedTime = time - startTime
             repeater!!.cancel()
             repeater = null
-            notifyListeners(Event.TIMER_STOPPED, time - startTime)
+            notifyListeners(
+                Event.TIMER_UPDATE,
+                (elapsedTime + (if (tmpPenalty == Penalty.PLUS_TWO) 2000 else 0)).timestamp()
+            )
+            notifyListeners(Event.TIMER_STOPPED, elapsedTime)
             numUps = -1
         }
     }
