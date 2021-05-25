@@ -29,7 +29,7 @@ fun Long.timestamp(): String {
     return "$seconds.$milliseconds"
 }
 
-fun Solve.toStatisticDataObject(): StatisticDataObject {
+private fun Solve.toStatisticDataObject(): StatisticDataObject {
     return StatisticDataObject(this.id, this.time)
 }
 
