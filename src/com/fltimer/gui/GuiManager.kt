@@ -46,8 +46,8 @@ class GuiManager : Listenable(), EventListener {
             notifyListeners(Event.TIMER_CANCEL)
         }
 
-        guiAdapter.setDeleteSelectedAction {
-            val id = solvesRef!!.keys.toTypedArray()[it]
+        guiAdapter.setDeleteSelectedAction { selectedIndex ->
+            val id = solvesRef!!.keys.toTypedArray()[selectedIndex]
             notifyListeners(Event.DATA_ITEM_REMOVE, id)
         }
 
