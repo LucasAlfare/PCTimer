@@ -2,6 +2,7 @@ package com.fltimer.gui.gui2
 
 import com.fltimer.data.Solves
 import com.fltimer.gui.model.GuiAdapter
+import com.fltimer.statistics.StatisticResult
 import com.fltimer.timestamp
 import java.awt.Container
 import java.awt.Font
@@ -27,7 +28,10 @@ class Gui2 : JFrame() {
         addSolve = JButton()
         scramble = JLabel()
         display = JLabel()
+        statisticsPanel = JPanel()
+
         defaultCloseOperation = EXIT_ON_CLOSE
+
         solves!!.border = BorderFactory.createTitledBorder("Solves: - -")
         solves!!.model = object : AbstractListModel<String?>() {
             var strings = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
@@ -41,22 +45,44 @@ class Gui2 : JFrame() {
         }
         solves!!.isFocusable = false
         jScrollPane1!!.setViewportView(solves)
+
         editSelected!!.text = "Edit selected..."
         editSelected!!.isFocusable = false
+
         clear!!.text = "Clear"
         clear!!.isFocusable = false
+
         deleteSelected!!.text = "Delete selected..."
         deleteSelected!!.isFocusable = false
+
         addSolve!!.text = "Add solve..."
         addSolve!!.isFocusable = false
+
+        scramble!!.font = Font("Courier New", 0, 18) // NOI18N
+
+        scramble!!.horizontalAlignment = SwingConstants.CENTER
         scramble!!.text = "jLabel2"
         scramble!!.isFocusable = false
-        scramble!!.font = Font("Courier New", 0, 18) // NOI18N
-        scramble!!.horizontalAlignment = SwingConstants.CENTER
-        display!!.text = 0L.timestamp()
-        display!!.isFocusable = false
-        display!!.font = Font("Impact", Font.PLAIN, 70) // NOI18N
+
+        display!!.font = Font("Courier New", 1, 70) // NOI18N
+
         display!!.horizontalAlignment = SwingConstants.CENTER
+        display!!.text = "jLabel3"
+        display!!.isFocusable = false
+
+        statisticsPanel!!.border = BorderFactory.createTitledBorder("Statistics")
+
+//        val statisticsPanelLayout = GroupLayout(statisticsPanel)
+//        statisticsPanel!!.layout = statisticsPanelLayout
+//        statisticsPanelLayout.setHorizontalGroup(
+//            statisticsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                .addGap(0, 0, Short.MAX_VALUE.toInt())
+//        )
+//        statisticsPanelLayout.setVerticalGroup(
+//            statisticsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                .addGap(0, 0, Short.MAX_VALUE.toInt())
+//        )
+
         val layout = GroupLayout(contentPane)
         contentPane.layout = layout
         layout.setHorizontalGroup(
@@ -87,12 +113,18 @@ class Gui2 : JFrame() {
                                 )
                                 .addComponent(jScrollPane1)
                         )
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(
                             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(scramble, GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE.toInt())
+                                .addComponent(display, GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE.toInt())
                                 .addComponent(
-                                    display,
+                                    scramble,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    Short.MAX_VALUE.toInt()
+                                )
+                                .addComponent(
+                                    statisticsPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     Short.MAX_VALUE.toInt()
@@ -111,27 +143,45 @@ class Gui2 : JFrame() {
                                 .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE.toInt())
                                 .addGroup(
                                     layout.createSequentialGroup()
-                                        .addComponent(scramble)
-                                        .addGap(18, 18, 18)
                                         .addComponent(
-                                            display,
+                                            scramble,
                                             GroupLayout.DEFAULT_SIZE,
                                             GroupLayout.DEFAULT_SIZE,
                                             Short.MAX_VALUE.toInt()
                                         )
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(
+                                            display,
+                                            GroupLayout.PREFERRED_SIZE,
+                                            362,
+                                            GroupLayout.PREFERRED_SIZE
+                                        )
                                 )
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(editSelected)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addSolve)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteSelected)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clear)
+                        .addGroup(
+                            layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                .addGroup(
+                                    layout.createSequentialGroup()
+                                        .addComponent(editSelected)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(addSolve)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(deleteSelected)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(clear)
+                                )
+                                .addComponent(
+                                    statisticsPanel,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    Short.MAX_VALUE.toInt()
+                                )
+                        )
                         .addContainerGap()
                 )
         )
+
         pack()
     }
 
@@ -143,6 +193,7 @@ class Gui2 : JFrame() {
     var jScrollPane1: JScrollPane? = null
     var scramble: JLabel? = null
     var solves: JList<String>? = null
+    var statisticsPanel: JPanel? = null
 
     fun start() {
         isVisible = true
@@ -151,7 +202,7 @@ class Gui2 : JFrame() {
 
 class Gui2Adapter : GuiAdapter() {
 
-    private lateinit var gui2: Gui2
+    private lateinit var gui: Gui2
 
     init {
         initGui()
@@ -202,11 +253,11 @@ class Gui2Adapter : GuiAdapter() {
     }
 
     override fun setDeleteSelectedAction(action: (Int) -> Unit) {
-        gui2.deleteSelected!!.addActionListener {
+        gui.deleteSelected!!.addActionListener {
             val l = solvesList as JList<String>
             if (l.selectedIndex != -1) {
                 val dialogResult = JOptionPane.showConfirmDialog(
-                    gui2,
+                    gui,
                     "Delete the selected solve?"
                 )
                 if (dialogResult == JOptionPane.YES_OPTION) {
@@ -217,13 +268,32 @@ class Gui2Adapter : GuiAdapter() {
     }
 
     override fun setClearAction(action: () -> Unit) {
-        gui2.clear!!.addActionListener {
+        gui.clear!!.addActionListener {
             val dialogResult = JOptionPane.showConfirmDialog(
-                gui2,
+                gui,
                 "Clear all solves?"
             )
             if (dialogResult == JOptionPane.YES_OPTION) {
                 action()
+            }
+        }
+    }
+
+    override fun setStatistics(originalData: Solves, resultsData: ArrayList<StatisticResult>) {
+        if (resultsData.size > 0) {
+            resultsData.forEach { result ->
+                val currentButton = JButton("${result.statisticId}: ${result.result.timestamp()}")
+                currentButton.addActionListener {
+                    var elements = ""
+                    result.relatedElements.forEach { id ->
+                        val s = originalData[id]!!
+                        elements += "${s.time.timestamp()}) ${s.scramble}\n"
+                    }
+
+                    JOptionPane.showMessageDialog(gui, elements)
+                }
+
+                gui.statisticsPanel!!.add(currentButton)
             }
         }
     }
@@ -245,29 +315,29 @@ class Gui2Adapter : GuiAdapter() {
     }
 
     override fun initGui() {
-        gui2 = Gui2()
+        gui = Gui2()
         initRoot()
         initScramble()
         initDisplay()
         initSolvesList()
         initStatisticList()
-        initAuxiliaryPane()
+        //initAuxiliaryPane()
     }
 
     override fun initRoot() {
-        root = gui2.contentPane
+        root = gui.contentPane
     }
 
     override fun initScramble() {
-        scramble = gui2.scramble
+        scramble = gui.scramble
     }
 
     override fun initDisplay() {
-        display = gui2.display
+        display = gui.display
     }
 
     override fun initSolvesList() {
-        solvesList = gui2.solves
+        solvesList = gui.solves
         (solvesList as JList<*>).model = DefaultListModel()
     }
 
@@ -280,6 +350,6 @@ class Gui2Adapter : GuiAdapter() {
     }
 
     override fun start() {
-        gui2.start()
+        gui.start()
     }
 }

@@ -7,7 +7,8 @@ import com.fltimer.data.Penalty
 import com.fltimer.data.Solves
 import com.fltimer.gui.gui2.Gui2Adapter
 import com.fltimer.gui.model.GuiAdapter
-import com.fltimer.statistics.StatisticResult
+import com.fltimer.statistics.getAllStatisticsFor
+import com.fltimer.toStatisticData
 
 @Suppress("MemberVisibilityCanBePrivate")
 class GuiManager : Listenable(), EventListener {
@@ -58,34 +59,25 @@ class GuiManager : Listenable(), EventListener {
         guiAdapter.start()
     }
 
-    override fun onEvent(event: Event, data: Any?) {
-        when (event) {
-            Event.TIMER_UPDATE -> handleDisplayUpdate(data as String)
-            Event.TIMER_STOPPED -> handleTimerStopped(data as Long)
-            Event.DATA_RESPONSE -> solvesRef = data as Solves
-            Event.DATA_CHANGED -> {
-                handleDataChanged(data as Solves)
-            }
-            Event.SCRAMBLE_CHANGED -> handleScrambleChanged(data as String)
-            Event.STATISTIC_RESPONSE_RESULT_OF -> handleStatisticResponseResultOf(data as StatisticResult)
-            Event.DATA_PENALTY_UPDATE -> tmpPenalty = data as Penalty
+    override fun onEvent(event: Event, data: Any?) = when (event) {
+        Event.TIMER_UPDATE -> handleDisplayUpdate(data as String)
+        Event.TIMER_STOPPED -> handleTimerStopped(data as Long)
+        Event.DATA_CHANGED -> handleDataChanged(data as Solves)
+        Event.SCRAMBLE_CHANGED -> handleScrambleChanged(data as String)
+        Event.DATA_PENALTY_UPDATE -> tmpPenalty = data as Penalty
 
-            else -> {
-            }
+        else -> {
         }
     }
 
     private fun handleDataChanged(solves: Solves) {
         solvesRef = solves
         guiAdapter.setSolvesListData(solvesRef!!)
+        guiAdapter.setStatistics(solvesRef!!, getAllStatisticsFor(solvesRef!!.toStatisticData()))
     }
 
     private fun handleDisplayUpdate(value: String) {
         guiAdapter.setDisplayText(value)
-    }
-
-    private fun handleStatisticResponseResultOf(statisticResult: StatisticResult) {
-        println(statisticResult)
     }
 
     fun handleTimerStopped(time: Long) {

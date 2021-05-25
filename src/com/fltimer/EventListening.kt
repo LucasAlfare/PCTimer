@@ -10,6 +10,8 @@ package com.fltimer
 
 /**
  * The main enumeration holding all labels of events used through the application process.
+ *
+ * TODO: remove statistics events, once they are not necessary because can be used though static calls.
  */
 enum class Event {
     TIMER_TOGGLE_DOWN,
@@ -36,12 +38,7 @@ enum class Event {
     SCRAMBLE_REQUEST_LAST,
     SCRAMBLE_RESPONSE_CURRENT,
     SCRAMBLE_RESPONSE_LAST,
-    SCRAMBLE_CHANGED,
-
-    STATISTIC_GET_ALL_RESULTS,
-    STATISTIC_GET_RESULT_OF,
-    STATISTIC_RESPONSE_ALL_RESULT,
-    STATISTIC_RESPONSE_RESULT_OF
+    SCRAMBLE_CHANGED
 }
 
 /**

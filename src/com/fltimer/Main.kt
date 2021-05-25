@@ -3,7 +3,6 @@ package com.fltimer
 import com.fltimer.data.DataManager
 import com.fltimer.gui.GuiManager
 import com.fltimer.scramble.ScrambleManager
-import com.fltimer.statistics.StatisticManager
 import com.fltimer.timer.TimerManager
 
 fun main() {
@@ -14,7 +13,6 @@ fun main() {
         scrambleManager,
         TimerManager(),
         DataManager(),
-        StatisticManager(),
         GuiManager()
     )
 

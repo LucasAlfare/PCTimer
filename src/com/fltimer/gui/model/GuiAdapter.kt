@@ -1,5 +1,8 @@
 package com.fltimer.gui.model
 
+import com.fltimer.data.Solves
+import com.fltimer.statistics.StatisticResult
+
 /**
  * Base class for injecting multi front-ends in this application.
  *
@@ -58,6 +61,8 @@ abstract class GuiAdapter {
     abstract fun setDeleteSelectedAction(action: (Int) -> Unit)
 
     abstract fun setClearAction(action: () -> Unit)
+
+    abstract fun setStatistics(originalData: Solves, resultsData: ArrayList<StatisticResult>)
 
     abstract fun setScrambleText(text: String)
 
