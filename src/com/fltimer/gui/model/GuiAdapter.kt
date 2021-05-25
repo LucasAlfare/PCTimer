@@ -33,6 +33,8 @@ abstract class GuiAdapter {
     var root: Any? = null
     var scramble: Any? = null
     var display: Any? = null
+    var solvesList: Any? = null
+    var statisticsList: Any? = null
     var auxiliaryPane: Any? = null
 
     /**
@@ -45,9 +47,23 @@ abstract class GuiAdapter {
      * Both callbacks are automatic called inside the direct implementation of this
      * class.
      */
-    abstract fun setupInteractionListener(onDown: () -> Unit, onUp: () -> Unit)
+    abstract fun setInteractionListener(onDown: () -> Unit, onUp: () -> Unit)
 
-    abstract fun setupCancelInteraction(onCancel: () -> Unit)
+    abstract fun setCancelAction(onCancel: () -> Unit)
+
+    abstract fun setEditSelectedSolveAction(action: () -> Unit)
+
+    abstract fun setAddSolveAction(action: () -> Unit)
+
+    abstract fun setDeleteSelectedAction(action: (Int) -> Unit)
+
+    abstract fun setClearAction(action: () -> Unit)
+
+    abstract fun setScrambleText(text: String)
+
+    abstract fun setDisplayText(text: String)
+
+    abstract fun setSolvesListData(data: Any)
 
     /**
      * Below some helper methods used to individually initializes fields related to the
@@ -58,6 +74,8 @@ abstract class GuiAdapter {
     abstract fun initRoot()
     abstract fun initScramble()
     abstract fun initDisplay()
+    abstract fun initSolvesList()
+    abstract fun initStatisticList()
     abstract fun initAuxiliaryPane()
 
     /**

@@ -5,10 +5,9 @@ import com.fltimer.EventListener
 import com.fltimer.Listenable
 import com.fltimer.data.Penalty
 import com.fltimer.data.Solves
-import com.fltimer.gui.gui1.Gui1Adapter
+import com.fltimer.gui.gui2.Gui2Adapter
 import com.fltimer.gui.model.GuiAdapter
 import com.fltimer.statistics.StatisticResult
-import javax.swing.JLabel
 
 @Suppress("MemberVisibilityCanBePrivate")
 class GuiManager : Listenable(), EventListener {
@@ -37,14 +36,23 @@ class GuiManager : Listenable(), EventListener {
          * For this first implementations experiments, the main gui adapter is set
          * to a instance of a adapter made for a test.
          */
-        guiAdapter = Gui1Adapter()
+        guiAdapter = Gui2Adapter()
 
-        guiAdapter.setupInteractionListener(
+        guiAdapter.setInteractionListener(
             onDown = { notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis()) },
             onUp = { notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis()) })
 
-        guiAdapter.setupCancelInteraction {
+        guiAdapter.setCancelAction {
             notifyListeners(Event.TIMER_CANCEL)
+        }
+
+        guiAdapter.setDeleteSelectedAction {
+            val id = solvesRef!!.keys.toTypedArray()[it]
+            notifyListeners(Event.DATA_ITEM_REMOVE, id)
+        }
+
+        guiAdapter.setClearAction {
+            notifyListeners(Event.DATA_CLEAR)
         }
 
         guiAdapter.start()
@@ -56,8 +64,7 @@ class GuiManager : Listenable(), EventListener {
             Event.TIMER_STOPPED -> handleTimerStopped(data as Long)
             Event.DATA_RESPONSE -> solvesRef = data as Solves
             Event.DATA_CHANGED -> {
-                solvesRef = data as Solves
-                println(solvesRef)
+                handleDataChanged(data as Solves)
             }
             Event.SCRAMBLE_CHANGED -> handleScrambleChanged(data as String)
             Event.STATISTIC_RESPONSE_RESULT_OF -> handleStatisticResponseResultOf(data as StatisticResult)
@@ -68,8 +75,13 @@ class GuiManager : Listenable(), EventListener {
         }
     }
 
+    private fun handleDataChanged(solves: Solves) {
+        solvesRef = solves
+        guiAdapter.setSolvesListData(solvesRef!!)
+    }
+
     private fun handleDisplayUpdate(value: String) {
-        (guiAdapter.display as JLabel).text = value
+        guiAdapter.setDisplayText(value)
     }
 
     private fun handleStatisticResponseResultOf(statisticResult: StatisticResult) {
@@ -90,6 +102,6 @@ class GuiManager : Listenable(), EventListener {
 
     fun handleScrambleChanged(scramble: String) {
         tmpScramble = scramble
-        (guiAdapter.scramble as JLabel).text = tmpScramble
+        guiAdapter.setScrambleText(tmpScramble)
     }
 }

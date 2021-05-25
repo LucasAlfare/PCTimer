@@ -26,7 +26,7 @@ import java.util.*
  */
 class TimerManager : Listenable(), EventListener {
 
-    private var useInspection = true
+    private var useInspection = false
     private var inspecting = false
     private var numUps = 0
     private var startTime = 0L

@@ -65,7 +65,7 @@ class Gui1Adapter : GuiAdapter() {
         initGui()
     }
 
-    override fun setupInteractionListener(onDown: () -> Unit, onUp: () -> Unit) {
+    override fun setInteractionListener(onDown: () -> Unit, onUp: () -> Unit) {
         (root!! as Container).addKeyListener(object : KeyAdapter() {
             override fun keyPressed(e: KeyEvent?) {
                 if (e?.keyCode == KeyEvent.VK_SPACE) {
@@ -87,7 +87,7 @@ class Gui1Adapter : GuiAdapter() {
         })
     }
 
-    override fun setupCancelInteraction(onCancel: () -> Unit) {
+    override fun setCancelAction(onCancel: () -> Unit) {
         (root!! as Container).addKeyListener(object : KeyAdapter() {
             override fun keyReleased(e: KeyEvent?) {
                 if (e?.keyCode == KeyEvent.VK_ESCAPE) {
@@ -95,6 +95,34 @@ class Gui1Adapter : GuiAdapter() {
                 }
             }
         })
+    }
+
+    override fun setEditSelectedSolveAction(action: () -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setAddSolveAction(action: () -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setDeleteSelectedAction(action: (Int) -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setClearAction(action: () -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setScrambleText(text: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setDisplayText(text: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setSolvesListData(data: Any) {
+        TODO("Not yet implemented")
     }
 
     override fun initGui() {
@@ -115,6 +143,14 @@ class Gui1Adapter : GuiAdapter() {
 
     override fun initDisplay() {
         display = gui1.display
+    }
+
+    override fun initSolvesList() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initStatisticList() {
+        TODO("Not yet implemented")
     }
 
     override fun initAuxiliaryPane() {
