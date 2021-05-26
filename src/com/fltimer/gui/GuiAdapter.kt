@@ -1,4 +1,4 @@
-package com.fltimer.gui.model
+package com.fltimer.gui
 
 import com.fltimer.data.Solves
 import com.fltimer.statistics.StatisticResult

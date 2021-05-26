@@ -1,7 +1,7 @@
 package com.fltimer.gui.gui2
 
 import com.fltimer.data.Solves
-import com.fltimer.gui.model.GuiAdapter
+import com.fltimer.gui.GuiAdapter
 import com.fltimer.statistics.StatisticResult
 import com.fltimer.timestamp
 import java.awt.Container

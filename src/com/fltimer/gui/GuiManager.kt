@@ -6,7 +6,6 @@ import com.fltimer.Listenable
 import com.fltimer.data.Penalty
 import com.fltimer.data.Solves
 import com.fltimer.gui.gui2.Gui2Adapter
-import com.fltimer.gui.model.GuiAdapter
 import com.fltimer.statistics.getAllStatisticsFor
 import com.fltimer.toStatisticData
 
