@@ -9,7 +9,7 @@ import com.fltimer.statistics.StatisticResult
  * All front-end operations supported for the project are defined here in order
  * to tell its extensions to create its implementations.
  *
- * The mains architecture for distinct Gui should follow the path:
+ * The main architecture for distinct Gui should follow the path:
  * - A custom "GuiSomething" class/file: this is the file that contains all the logic related
  * to the build of the visual interface. This includes laying out, design and some interactions
  * behaviors;
