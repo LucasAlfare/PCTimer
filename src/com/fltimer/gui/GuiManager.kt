@@ -5,7 +5,7 @@ import com.fltimer.EventListener
 import com.fltimer.Listenable
 import com.fltimer.data.Penalty
 import com.fltimer.data.Solves
-import com.fltimer.gui.gui2.Gui2Adapter
+import com.fltimer.gui.light.LightWeightGuiAdapter
 import com.fltimer.statistics.getAllStatisticsFor
 import com.fltimer.toStatisticData
 
@@ -17,9 +17,12 @@ class GuiManager : Listenable(), EventListener {
      * The field is typed to the abstract type GuiAdapter in order to leave the user
      * switch its time over the time.
      *
+     * For this first implementations experiments, the main gui adapter is set
+     * to a instance of a adapter made for a test.
+     *
      * TODO: restrict this switching only for development level?
      */
-    private lateinit var guiAdapter: GuiAdapter
+    private var abstractGuiAdapter: AbstractGuiAdapter = LightWeightGuiAdapter()
 
     private var solvesRef: Solves? = null
 
@@ -28,34 +31,24 @@ class GuiManager : Listenable(), EventListener {
     private var tmpPenalty = Penalty.OK
 
     init {
-        setupGui()
-    }
-
-    private fun setupGui() {
-        /**
-         * For this first implementations experiments, the main gui adapter is set
-         * to a instance of a adapter made for a test.
-         */
-        guiAdapter = Gui2Adapter()
-
-        guiAdapter.setInteractionListener(
+        abstractGuiAdapter.setInteractionListener(
             onDown = { notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis()) },
             onUp = { notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis()) })
 
-        guiAdapter.setCancelAction {
+        abstractGuiAdapter.setCancelAction {
             notifyListeners(Event.TIMER_CANCEL)
         }
 
-        guiAdapter.setDeleteSelectedAction { selectedIndex ->
+        abstractGuiAdapter.setDeleteSelectedAction { selectedIndex ->
             val id = solvesRef!!.keys.toTypedArray()[selectedIndex]
             notifyListeners(Event.DATA_ITEM_REMOVE, id)
         }
 
-        guiAdapter.setClearAction {
+        abstractGuiAdapter.setClearAction {
             notifyListeners(Event.DATA_CLEAR)
         }
 
-        guiAdapter.start()
+        abstractGuiAdapter.start()
     }
 
     override fun onEvent(event: Event, data: Any?) = when (event) {
@@ -71,12 +64,12 @@ class GuiManager : Listenable(), EventListener {
 
     private fun handleDataChanged(solves: Solves) {
         solvesRef = solves
-        guiAdapter.setSolvesListData(solvesRef!!)
-        guiAdapter.setStatistics(solvesRef!!, getAllStatisticsFor(solvesRef!!.toStatisticData()))
+        abstractGuiAdapter.setSolvesListData(solvesRef!!)
+        abstractGuiAdapter.setStatistics(solvesRef!!, getAllStatisticsFor(solvesRef!!.toStatisticData()))
     }
 
     private fun handleDisplayUpdate(value: String) {
-        guiAdapter.setDisplayText(value)
+        abstractGuiAdapter.setDisplayText(value)
     }
 
     fun handleTimerStopped(time: Long) {
@@ -93,6 +86,6 @@ class GuiManager : Listenable(), EventListener {
 
     fun handleScrambleChanged(scramble: String) {
         tmpScramble = scramble
-        guiAdapter.setScrambleText(tmpScramble)
+        abstractGuiAdapter.setScrambleText(tmpScramble)
     }
 }

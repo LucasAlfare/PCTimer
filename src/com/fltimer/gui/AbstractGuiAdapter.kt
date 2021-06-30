@@ -23,7 +23,7 @@ import com.fltimer.statistics.StatisticResult
  *
  * TODO: create more abstractions that any visual interface can have.
  */
-abstract class GuiAdapter {
+abstract class AbstractGuiAdapter {
 
     /**
      * The main fields that can exists in a visual interface.
@@ -47,27 +47,82 @@ abstract class GuiAdapter {
      * Those actions are named down and up, in order to match the "press" and the
      * "release" actions.
      *
-     * Both callbacks are automatic called inside the direct implementation of this
+     * Both callbacks must be automatic called inside the direct implementation of this
      * class.
      */
     abstract fun setInteractionListener(onDown: () -> Unit, onUp: () -> Unit)
 
+    /**
+     * Defines what should occur in a Cancel action. Normally, this cancel
+     * refers to the act of interrupt and reset the state of the timer,
+     * making it in a raw state again.
+     *
+     * The callback function is called onCancel and must be called inside the
+     * direct implementations of this class.
+     */
     abstract fun setCancelAction(onCancel: () -> Unit)
 
+    /**
+     * Defines what should occur when the user interface got actions
+     * related to editing results.
+     *
+     * The callback function is called action and must be called inside the
+     * direct implementations of this class.
+     */
     abstract fun setEditSelectedSolveAction(action: () -> Unit)
 
+    /**
+     * Defines what should occur when the user perform a request
+     * to create a new item to be stored in the timer objects database.
+     *
+     * The callback function is called action and must be called inside the
+     * direct implementations of this class.
+     */
     abstract fun setAddSolveAction(action: () -> Unit)
 
+    /**
+     * Defines what should occur when the user perform a request
+     * to remove a existing item object from the timer database.
+     *
+     * The callback function is called action and must be called inside the
+     * direct implementations of this class.
+     */
     abstract fun setDeleteSelectedAction(action: (Int) -> Unit)
 
+    /**
+     * Defines what should occur when the user perform a request
+     * to clear all the existing data of the application.
+     *
+     * The callback function is called action and must be called inside the
+     * direct implementations of this class.
+     */
     abstract fun setClearAction(action: () -> Unit)
 
+    /**
+     * Method used to describe what and when update the statistics over the
+     * user interface.
+     *
+     * This comes with the root data and with a array of results based on that
+     * data.
+     */
     abstract fun setStatistics(originalData: Solves, resultsData: ArrayList<StatisticResult>)
 
+    /**
+     * Method used to describe how to set the scramble text/data over the
+     * user interface.
+     */
     abstract fun setScrambleText(text: String)
 
+    /**
+     * Method used to describe how to set the display text/data over the
+     * user interface.
+     */
     abstract fun setDisplayText(text: String)
 
+    /**
+     * Method to describe how to set the current application objects/data
+     * over the user interface.
+     */
     abstract fun setSolvesListData(data: Any)
 
     /**

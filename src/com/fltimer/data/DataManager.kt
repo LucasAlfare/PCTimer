@@ -33,6 +33,7 @@ data class Solve(
  * - DATA_RESPONSE(carries: the data);
  * - DATA_CHANGED(carries: the data).
  */
+@Suppress("NON_EXHAUSTIVE_WHEN")
 class DataManager : Listenable(), EventListener {
 
     private val solves = Solves()
@@ -66,9 +67,6 @@ class DataManager : Listenable(), EventListener {
 
             Event.DATA_ITEM_REMOVE -> handleDataItemRemove(data as UUID)
             Event.DATA_GET -> handleDataGet()
-
-            else -> {
-            }
         }
     }
 

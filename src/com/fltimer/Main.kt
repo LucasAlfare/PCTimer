@@ -19,7 +19,7 @@ fun main() {
     scrambleManager.handleScrambleRequestNew()
 }
 
-fun setupManagers(vararg managers: Listenable) {
+private fun setupManagers(vararg managers: Listenable) {
     managers.forEach { m1 ->
         managers.forEach { m2 ->
             if (m2 != m1) {
