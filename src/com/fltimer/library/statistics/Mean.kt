@@ -1,4 +1,4 @@
-package com.fltimer.statistics
+package com.fltimer.library.statistics
 
 import java.util.*
 

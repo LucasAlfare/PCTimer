@@ -1,12 +1,11 @@
-package com.fltimer.gui.light
+package com.fltimer.library.gui.light
 
-import com.fltimer.data.Solves
-import com.fltimer.gui.AbstractGuiAdapter
-import com.fltimer.gui.swing.layout.JRelativeLayout
-import com.fltimer.gui.swing.layout.JRelativeLayout.Constraints.MATCH_PARENT
-import com.fltimer.gui.swing.layout.JRelativeLayout.relativeConstraints
-import com.fltimer.statistics.StatisticResult
-import com.fltimer.timestamp
+import com.fltimer.library.data.Solves
+import com.fltimer.library.gui.AbstractGuiAdapter
+import com.fltimer.library.gui.swing.layout.JRelativeLayout.Constraints.MATCH_PARENT
+import com.fltimer.library.gui.swing.layout.JRelativeLayout.relativeConstraints
+import com.fltimer.library.statistics.StatisticResult
+import com.fltimer.library.timestamp
 import java.awt.Container
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
@@ -44,7 +43,7 @@ class LightWeightGui : JFrame() {
         contentPane.isFocusable = true
         contentPane.requestFocus()
 
-        layout = JRelativeLayout()
+        layout = com.fltimer.library.gui.swing.layout.JRelativeLayout()
         add(
             solves,
             relativeConstraints().parentStart().parentTop().percentileHeight(MATCH_PARENT).percentileWidth(25.0)

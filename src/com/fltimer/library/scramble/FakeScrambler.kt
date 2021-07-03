@@ -1,4 +1,4 @@
-package com.fltimer.scramble
+package com.fltimer.library.scramble
 
 import kotlin.math.round
 

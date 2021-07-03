@@ -1,8 +1,8 @@
-package com.fltimer
+package com.fltimer.library
 
-import com.fltimer.data.Solve
-import com.fltimer.data.Solves
-import com.fltimer.statistics.StatisticDataObject
+import com.fltimer.library.data.Solve
+import com.fltimer.library.data.Solves
+import com.fltimer.library.statistics.StatisticDataObject
 import java.util.*
 
 /**

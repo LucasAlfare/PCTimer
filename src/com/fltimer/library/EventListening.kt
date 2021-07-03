@@ -6,7 +6,7 @@
  *
  * @author Francisco Lucas, 2021.
  */
-package com.fltimer
+package com.fltimer.library
 
 /**
  * The main enumeration holding all labels of events used through the application process.
@@ -45,7 +45,7 @@ enum class Event {
  * Interface that makes the class able to receive events (with its respective data)
  */
 interface EventListener {
-    fun onEvent(event: Event, data: Any?)
+    fun onEvent(event: com.fltimer.library.Event, data: Any?)
 }
 
 /**
@@ -54,18 +54,18 @@ interface EventListener {
  */
 open class Listenable {
 
-    private val listeners = arrayListOf<EventListener>()
+    private val listeners = arrayListOf<com.fltimer.library.EventListener>()
 
-    fun notifyListeners(event: Event, data: Any? = null) {
+    fun notifyListeners(event: com.fltimer.library.Event, data: Any? = null) {
         listeners.forEach { it.onEvent(event, data) }
     }
 
-    fun addListener(el: EventListener) {
+    fun addListener(el: com.fltimer.library.EventListener) {
         if (!listeners.contains(el)) listeners += el
     }
 
     // deprecated?
-    fun removeListener(el: EventListener) {
+    fun removeListener(el: com.fltimer.library.EventListener) {
         listeners -= el
     }
 }

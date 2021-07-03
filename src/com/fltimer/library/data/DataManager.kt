@@ -1,10 +1,7 @@
 @file:Suppress("MemberVisibilityCanBePrivate")
 
-package com.fltimer.data
+package com.fltimer.library.data
 
-import com.fltimer.Event
-import com.fltimer.EventListener
-import com.fltimer.Listenable
 import java.util.*
 
 
@@ -34,15 +31,15 @@ data class Solve(
  * - DATA_CHANGED(carries: the data).
  */
 @Suppress("NON_EXHAUSTIVE_WHEN")
-class DataManager : Listenable(), EventListener {
+class DataManager : com.fltimer.library.Listenable(), com.fltimer.library.EventListener {
 
     private val solves = Solves()
 
-    override fun onEvent(event: Event, data: Any?) {
+    override fun onEvent(event: com.fltimer.library.Event, data: Any?) {
         when (event) {
-            Event.DATA_CLEAR -> handleDataClear()
+            com.fltimer.library.Event.DATA_CLEAR -> handleDataClear()
 
-            Event.DATA_ITEM_CREATE -> {
+            com.fltimer.library.Event.DATA_ITEM_CREATE -> {
                 val params = data as Array<*>
                 val time = params[0] as Long
                 val scramble = params[1] as String
@@ -54,7 +51,7 @@ class DataManager : Listenable(), EventListener {
                 )
             }
 
-            Event.DATA_ITEM_UPDATE -> {
+            com.fltimer.library.Event.DATA_ITEM_UPDATE -> {
                 println("DATA_ITEM_UPDATE received")
                 val params = data as Array<*>
                 handleDataItemUpdate(
@@ -65,20 +62,20 @@ class DataManager : Listenable(), EventListener {
                 )
             }
 
-            Event.DATA_ITEM_REMOVE -> handleDataItemRemove(data as UUID)
-            Event.DATA_GET -> handleDataGet()
+            com.fltimer.library.Event.DATA_ITEM_REMOVE -> handleDataItemRemove(data as UUID)
+            com.fltimer.library.Event.DATA_GET -> handleDataGet()
         }
     }
 
     fun handleDataClear() {
         solves.clear()
-        notifyListeners(Event.DATA_CHANGED, solves)
+        notifyListeners(com.fltimer.library.Event.DATA_CHANGED, solves)
     }
 
     fun handleDataItemCreate(time: Long, scramble: String, penalty: Penalty): Solve {
         val solveRef = Solve(time = time, scramble = scramble, penalty = penalty)
         solves[solveRef.id] = solveRef
-        notifyListeners(Event.DATA_CHANGED, solves)
+        notifyListeners(com.fltimer.library.Event.DATA_CHANGED, solves)
         return solveRef
     }
 
@@ -87,16 +84,16 @@ class DataManager : Listenable(), EventListener {
         solveRef.time = time
         solveRef.scramble = scramble
         solveRef.penalty = penalty
-        notifyListeners(Event.DATA_CHANGED, solves)
+        notifyListeners(com.fltimer.library.Event.DATA_CHANGED, solves)
     }
 
     fun handleDataItemRemove(id: UUID) {
         solves.remove(id)
-        notifyListeners(Event.DATA_CHANGED, solves)
+        notifyListeners(com.fltimer.library.Event.DATA_CHANGED, solves)
     }
 
     fun handleDataGet(): LinkedHashMap<UUID, Solve> {
-        notifyListeners(Event.DATA_CHANGED, solves)
+        notifyListeners(com.fltimer.library.Event.DATA_CHANGED, solves)
         return solves
     }
 }

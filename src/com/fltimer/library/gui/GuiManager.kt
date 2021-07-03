@@ -1,16 +1,13 @@
-package com.fltimer.gui
+package com.fltimer.library.gui
 
-import com.fltimer.Event
-import com.fltimer.EventListener
-import com.fltimer.Listenable
-import com.fltimer.data.Penalty
-import com.fltimer.data.Solves
-import com.fltimer.gui.light.LightWeightGuiAdapter
-import com.fltimer.statistics.getAllStatisticsFor
-import com.fltimer.toStatisticData
+import com.fltimer.library.data.Penalty
+import com.fltimer.library.data.Solves
+import com.fltimer.library.gui.light.LightWeightGuiAdapter
+import com.fltimer.library.statistics.getAllStatisticsFor
+import com.fltimer.library.toStatisticData
 
 @Suppress("MemberVisibilityCanBePrivate")
-class GuiManager : Listenable(), EventListener {
+class GuiManager : com.fltimer.library.Listenable(), com.fltimer.library.EventListener {
 
     /**
      * The main GuiAdapter instance of the GuiManager.
@@ -22,7 +19,7 @@ class GuiManager : Listenable(), EventListener {
      *
      * TODO: restrict this switching only for development level?
      */
-    private var abstractGuiAdapter: AbstractGuiAdapter = LightWeightGuiAdapter()
+    private var abstractGuiAdapter: LightWeightGuiAdapter = LightWeightGuiAdapter()
 
     private var solvesRef: Solves? = null
 
@@ -32,31 +29,31 @@ class GuiManager : Listenable(), EventListener {
 
     init {
         abstractGuiAdapter.setInteractionListener(
-            onDown = { notifyListeners(Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis()) },
-            onUp = { notifyListeners(Event.TIMER_TOGGLE_UP, System.currentTimeMillis()) })
+            onDown = { notifyListeners(com.fltimer.library.Event.TIMER_TOGGLE_DOWN, System.currentTimeMillis()) },
+            onUp = { notifyListeners(com.fltimer.library.Event.TIMER_TOGGLE_UP, System.currentTimeMillis()) })
 
         abstractGuiAdapter.setCancelAction {
-            notifyListeners(Event.TIMER_CANCEL)
+            notifyListeners(com.fltimer.library.Event.TIMER_CANCEL)
         }
 
         abstractGuiAdapter.setDeleteSelectedAction { selectedIndex ->
             val id = solvesRef!!.keys.toTypedArray()[selectedIndex]
-            notifyListeners(Event.DATA_ITEM_REMOVE, id)
+            notifyListeners(com.fltimer.library.Event.DATA_ITEM_REMOVE, id)
         }
 
         abstractGuiAdapter.setClearAction {
-            notifyListeners(Event.DATA_CLEAR)
+            notifyListeners(com.fltimer.library.Event.DATA_CLEAR)
         }
 
         abstractGuiAdapter.start()
     }
 
-    override fun onEvent(event: Event, data: Any?) = when (event) {
-        Event.TIMER_UPDATE -> handleDisplayUpdate(data as String)
-        Event.TIMER_STOPPED -> handleTimerStopped(data as Long)
-        Event.DATA_CHANGED -> handleDataChanged(data as Solves)
-        Event.SCRAMBLE_CHANGED -> handleScrambleChanged(data as String)
-        Event.DATA_PENALTY_UPDATE -> tmpPenalty = data as Penalty
+    override fun onEvent(event: com.fltimer.library.Event, data: Any?) = when (event) {
+        com.fltimer.library.Event.TIMER_UPDATE -> handleDisplayUpdate(data as String)
+        com.fltimer.library.Event.TIMER_STOPPED -> handleTimerStopped(data as Long)
+        com.fltimer.library.Event.DATA_CHANGED -> handleDataChanged(data as Solves)
+        com.fltimer.library.Event.SCRAMBLE_CHANGED -> handleScrambleChanged(data as String)
+        com.fltimer.library.Event.DATA_PENALTY_UPDATE -> tmpPenalty = data as Penalty
 
         else -> {
         }
@@ -75,13 +72,13 @@ class GuiManager : Listenable(), EventListener {
     fun handleTimerStopped(time: Long) {
         tmpTime = time
         notifyListeners(
-            Event.DATA_ITEM_CREATE, arrayOf(
+            com.fltimer.library.Event.DATA_ITEM_CREATE, arrayOf(
                 tmpTime,
                 tmpScramble,
                 tmpPenalty
             )
         )
-        notifyListeners(Event.SCRAMBLE_REQUEST_NEW)
+        notifyListeners(com.fltimer.library.Event.SCRAMBLE_REQUEST_NEW)
     }
 
     fun handleScrambleChanged(scramble: String) {

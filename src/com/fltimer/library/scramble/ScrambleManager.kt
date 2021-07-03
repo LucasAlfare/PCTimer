@@ -1,8 +1,5 @@
-package com.fltimer.scramble
+package com.fltimer.library.scramble
 
-import com.fltimer.Event
-import com.fltimer.EventListener
-import com.fltimer.Listenable
 import java.util.*
 
 interface Scrambler {
@@ -22,20 +19,20 @@ interface Scrambler {
  * - SCRAMBLE_CHANGED;
  * - SCRAMBLE_RESPONSE.
  */
-class ScrambleManager : Listenable(), EventListener {
+class ScrambleManager : com.fltimer.library.Listenable(), com.fltimer.library.EventListener {
 
     private var current = ""
     private var last = ""
 
     private var scrambler = PocketCubeScrambler()
 
-    override fun onEvent(event: Event, data: Any?) {
+    override fun onEvent(event: com.fltimer.library.Event, data: Any?) {
         when (event) {
-            Event.SCRAMBLE_REQUEST_NEW -> {
+            com.fltimer.library.Event.SCRAMBLE_REQUEST_NEW -> {
                 handleScrambleRequestNew()
             }
 
-            Event.SCRAMBLE_REQUEST_LAST -> {
+            com.fltimer.library.Event.SCRAMBLE_REQUEST_LAST -> {
                 handleScrambleRequestLast()
             }
 
@@ -48,10 +45,10 @@ class ScrambleManager : Listenable(), EventListener {
         //TODO
         last = current
         current = scrambler.getScramble()
-        notifyListeners(Event.SCRAMBLE_CHANGED, current)
+        notifyListeners(com.fltimer.library.Event.SCRAMBLE_CHANGED, current)
     }
 
     fun handleScrambleRequestLast() {
-        notifyListeners(Event.SCRAMBLE_RESPONSE_LAST, last)
+        notifyListeners(com.fltimer.library.Event.SCRAMBLE_RESPONSE_LAST, last)
     }
 }

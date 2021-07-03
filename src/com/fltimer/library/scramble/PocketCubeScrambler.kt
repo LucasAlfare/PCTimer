@@ -1,4 +1,4 @@
-package com.fltimer.scramble
+package com.fltimer.library.scramble
 
 class PocketCubeScrambler : Scrambler {
 

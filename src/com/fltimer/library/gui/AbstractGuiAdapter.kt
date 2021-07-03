@@ -1,7 +1,7 @@
-package com.fltimer.gui
+package com.fltimer.library.gui
 
-import com.fltimer.data.Solves
-import com.fltimer.statistics.StatisticResult
+import com.fltimer.library.data.Solves
+import com.fltimer.library.statistics.StatisticResult
 
 /**
  * Base class for injecting multi front-ends in this application.

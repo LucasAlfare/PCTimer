@@ -1,10 +1,7 @@
-package com.fltimer.timer
+package com.fltimer.library.timer
 
-import com.fltimer.Event
-import com.fltimer.EventListener
-import com.fltimer.Listenable
-import com.fltimer.data.Penalty
-import com.fltimer.timestamp
+import com.fltimer.library.data.Penalty
+import com.fltimer.library.timestamp
 import java.util.*
 
 /**
@@ -24,7 +21,7 @@ import java.util.*
  *
  * TODO: handle automatic penalty detection, through inspection
  */
-class TimerManager : Listenable(), EventListener {
+class TimerManager : com.fltimer.library.Listenable(), com.fltimer.library.EventListener {
 
     private var useInspection = false
     private var inspecting = false
@@ -35,12 +32,12 @@ class TimerManager : Listenable(), EventListener {
     private var inspectionRepeater: Timer? = null
     private var tmpPenalty = Penalty.OK
 
-    override fun onEvent(event: Event, data: Any?) {
+    override fun onEvent(event: com.fltimer.library.Event, data: Any?) {
         when (event) {
-            Event.TIMER_TOGGLE_DOWN -> handleTimerToggle(false, data as Long)
-            Event.TIMER_TOGGLE_UP -> handleTimerToggle(true, data as Long)
-            Event.TIMER_SET_WCA_INSPECTION -> handleTimerSetWcaInspection(data as Boolean)
-            Event.TIMER_CANCEL -> handleTimerCancel()
+            com.fltimer.library.Event.TIMER_TOGGLE_DOWN -> handleTimerToggle(false, data as Long)
+            com.fltimer.library.Event.TIMER_TOGGLE_UP -> handleTimerToggle(true, data as Long)
+            com.fltimer.library.Event.TIMER_SET_WCA_INSPECTION -> handleTimerSetWcaInspection(data as Boolean)
+            com.fltimer.library.Event.TIMER_CANCEL -> handleTimerCancel()
             else -> {
             }
         }
@@ -55,7 +52,7 @@ class TimerManager : Listenable(), EventListener {
         elapsedTime = 0L
         inspectionRepeater = null
         repeater = null
-        notifyListeners(Event.TIMER_UPDATE, "ready")
+        notifyListeners(com.fltimer.library.Event.TIMER_UPDATE, "ready")
     }
 
     private fun handleTimerSetWcaInspection(useInspection: Boolean) {
@@ -79,20 +76,20 @@ class TimerManager : Listenable(), EventListener {
                 when (seconds) {
                     in 1..3 -> {
                         tmpPenalty = Penalty.PLUS_TWO
-                        notifyListeners(Event.TIMER_UPDATE, "+$seconds")
+                        notifyListeners(com.fltimer.library.Event.TIMER_UPDATE, "+$seconds")
                     }
                     0 -> {
                         tmpPenalty = Penalty.DNF
                         handleTimerCancel()
-                        notifyListeners(Event.TIMER_UPDATE, "DNF")
-                        notifyListeners(Event.TIMER_STOPPED, -1L)
+                        notifyListeners(com.fltimer.library.Event.TIMER_UPDATE, "DNF")
+                        notifyListeners(com.fltimer.library.Event.TIMER_STOPPED, -1L)
                     }
                     else -> {
                         tmpPenalty = Penalty.OK
-                        notifyListeners(Event.TIMER_UPDATE, seconds.toString())
+                        notifyListeners(com.fltimer.library.Event.TIMER_UPDATE, seconds.toString())
                     }
                 }
-                notifyListeners(Event.DATA_PENALTY_UPDATE, tmpPenalty)
+                notifyListeners(com.fltimer.library.Event.DATA_PENALTY_UPDATE, tmpPenalty)
             }
         }, 0L, 1000L)
         inspecting = true
@@ -107,10 +104,10 @@ class TimerManager : Listenable(), EventListener {
                     elapsedTime = System.currentTimeMillis() - startTime
                     val text =
                         "${if (tmpPenalty == Penalty.PLUS_TWO) "+" else ""}${(elapsedTime + (if (tmpPenalty == Penalty.PLUS_TWO) 2000 else 0)).timestamp()}"
-                    notifyListeners(Event.TIMER_UPDATE, text)
+                    notifyListeners(com.fltimer.library.Event.TIMER_UPDATE, text)
                 }
             }, 0, 1)
-            notifyListeners(Event.TIMER_STARTED)
+            notifyListeners(com.fltimer.library.Event.TIMER_STARTED)
             inspecting = false
         }
 
@@ -138,10 +135,10 @@ class TimerManager : Listenable(), EventListener {
             repeater!!.cancel()
             repeater = null
             notifyListeners(
-                Event.TIMER_UPDATE,
+                com.fltimer.library.Event.TIMER_UPDATE,
                 (elapsedTime + (if (tmpPenalty == Penalty.PLUS_TWO) 2000 else 0)).timestamp()
             )
-            notifyListeners(Event.TIMER_STOPPED, elapsedTime)
+            notifyListeners(com.fltimer.library.Event.TIMER_STOPPED, elapsedTime)
             numUps = -1
         }
     }
